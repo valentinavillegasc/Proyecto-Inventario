@@ -3,14 +3,13 @@ package modelo;
 public class Material {
     private int cod;
     private String nombre;
-    private Categoria categoria; // Relación con Categoría
+    private Categoria categoria; 
     private String proveedor;
     private String ubicacion;
     private int entradas;
     private int salidas;
     private int stock;
 
-    // Métodos get y set
     public int getCodigo() {
         return cod;
     }

@@ -16,38 +16,37 @@ public class Vista {
         int opcion;
         do {
             System.out.println("1. Iniciar sesión");
-            System.out.println("2. Crear material");
-            System.out.println("3. Registrar movimiento");
-            System.out.println("4. Ver todos los materiales");
-            System.out.println("5. Ver todos los movimientos");
-            System.out.println("6. Ver todas las categorías");
-            System.out.println("7. Crear categoría");
+            System.out.println("2. Crear categoría");
+            System.out.println("3. Crear material");
+            System.out.println("4. Registrar movimiento");
+            System.out.println("5. Ver todos los materiales");
+            System.out.println("6. Ver todos los movimientos");
+            System.out.println("7. Ver todas las categorías");
             System.out.println("8. Salir");
             System.out.print("Elige una opción: ");
             opcion = scanner.nextInt();
-            scanner.nextLine(); // Limpiar buffer
 
             switch (opcion) {
                 case 1:
                     iniciarSesion();
                     break;
                 case 2:
-                    crearMaterial();
+                    crearCategoria();
                     break;
                 case 3:
+                    crearMaterial();
+                    break;
+                case 4:
                     registrarMovimiento();
                     break;
-                    case 4:
+                case 5:
                     mostrarTodosLosMateriales();
                     break;
-                case 5:
+                case 6:
                     mostrarTodosLosMovimientos();
                     break;
-                case 6:
+                case 7:
                     mostrarTodasLasCategorias();
-                    break;
-                    case 7:
-                    crearCategoria();
                     break;
                 case 8:
                     System.out.println("Saliendo...");
@@ -58,6 +57,8 @@ public class Vista {
         } while (opcion != 4);
     }
 
+
+//!USUARIO
     private void iniciarSesion() {
         System.out.print("Nombre de usuario: ");
         String nombreUsuario = scanner.nextLine();
@@ -70,6 +71,8 @@ public class Vista {
             System.out.println("Usuario o contraseña incorrectos");
         }
     }
+
+//!CATEGORÍA
     private void crearCategoria() {
         System.out.print("Nombre de la nueva categoría: ");
         String nombreCategoria = scanner.nextLine();
@@ -77,6 +80,20 @@ public class Vista {
         System.out.println("Categoría creada con ID: " + nuevaCategoria.getId());
     }
 
+    private void mostrarTodasLasCategorias() {
+        List<Categoria> categorias = controlador.obtenerTodasLasCategorias();
+        if (categorias.isEmpty()) {
+            System.out.println("No hay categorías registradas.");
+        } else {
+            System.out.println("Lista de todas las categorías:");
+            for (Categoria categoria : categorias) {
+                System.out.println("ID: " + categoria.getId() + 
+                                   ", Nombre: " + categoria.getNombre());
+            }
+        }
+    }
+
+    //!MATERIAL
     private void crearMaterial() {
         if (!controlador.hayCategoriasDisponibles()) {
             System.out.println("No hay categorías disponibles. Por favor, crea una categoría primero.");
@@ -105,6 +122,23 @@ public class Vista {
         }
     }
 
+    private void mostrarTodosLosMateriales() {
+        List<Material> materiales = controlador.obtenerTodosLosMateriales();
+        if (materiales.isEmpty()) {
+            System.out.println("No hay materiales disponibles.");
+        } else {
+            System.out.println("Lista de todos los materiales:");
+            for (Material material : materiales) {
+                System.out.println("ID: " + material.getCodigo() + 
+                                   ", Nombre: " + material.getNombre() + 
+                                   ", Proveedor: " + material.getProveedor() +
+                                   ", Categoría: " + material.getCategoria().getNombre() +
+                                   ", Stock: " + material.getStock());
+            }
+        }
+    }
+
+    //!MOVIMIENTOS
     private void registrarMovimiento() {
         System.out.print("ID del material: ");
         int idMaterial = scanner.nextInt();
@@ -123,21 +157,6 @@ public class Vista {
         }
     }
 
-    private void mostrarTodosLosMateriales() {
-        List<Material> materiales = controlador.obtenerTodosLosMateriales();
-        if (materiales.isEmpty()) {
-            System.out.println("No hay materiales disponibles.");
-        } else {
-            System.out.println("Lista de todos los materiales:");
-            for (Material material : materiales) {
-                System.out.println("ID: " + material.getCodigo() + 
-                                   ", Nombre: " + material.getNombre() + 
-                                   ", Proveedor: " + material.getProveedor() +
-                                   ", Categoría: " + material.getCategoria().getNombre() +
-                                   ", Stock: " + material.getStock());
-            }
-        }
-    }
 
     private void mostrarTodosLosMovimientos() {
         List<Movimiento> movimientos = controlador.obtenerTodosLosMovimientos();
@@ -156,18 +175,7 @@ public class Vista {
         }
     }
 
-    // Método para mostrar todas las categorías
-    private void mostrarTodasLasCategorias() {
-        List<Categoria> categorias = controlador.obtenerTodasLasCategorias();
-        if (categorias.isEmpty()) {
-            System.out.println("No hay categorías registradas.");
-        } else {
-            System.out.println("Lista de todas las categorías:");
-            for (Categoria categoria : categorias) {
-                System.out.println("ID: " + categoria.getId() + 
-                                   ", Nombre: " + categoria.getNombre());
-            }
-        }
-    }
+   
+    
 }
 

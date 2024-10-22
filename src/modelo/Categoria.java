@@ -4,7 +4,7 @@ public class Categoria {
     private int id;
     private String nombre;
 
-    // Métodos get y set
+    
     public int getId() {
         return id;
     }

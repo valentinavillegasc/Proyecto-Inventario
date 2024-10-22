@@ -6,9 +6,9 @@ public class Movimiento {
     private int id;
     private String tipo;
     private String motivo;
-    private Material material; // Relación con Material
+    private Material material;
     private int cantidad;
-    private Usuario responsable; // Relación con Usuario
+    private Usuario responsable; 
     private LocalDateTime fecha;
     private String ubicacion;
 

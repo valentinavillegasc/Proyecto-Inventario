@@ -7,7 +7,9 @@ public class Usuario {
     private String rol;
     private String nombre;
 
-    // Métodos get y set
+//* FALTA CREAR USUARIO
+
+
     public String getNombreUsuario() {
         return nombreUsuario;
     }
@@ -24,7 +26,6 @@ public class Usuario {
         this.contrasena = contrasena;
     }
 
-    // Métodos operacionales
     public boolean iniciarSesion(String nombreUsuario, String contrasena) {
         return this.nombreUsuario.equals(nombreUsuario) && this.contrasena.equals(contrasena);
     }

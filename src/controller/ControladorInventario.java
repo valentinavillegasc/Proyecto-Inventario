@@ -16,7 +16,8 @@ public class ControladorInventario {
     private Map<Integer, Movimiento> movimientos = new HashMap<>();
     private Map<Integer, Categoria> categorias = new HashMap<>();
 
-    // Métodos de Usuario
+
+    //!USUARIO
     public boolean iniciarSesion(String nombreUsuario, String contrasena) {
         for (Usuario usuario : usuarios.values()) {
             if (usuario.iniciarSesion(nombreUsuario, contrasena)) {
@@ -35,7 +36,46 @@ public class ControladorInventario {
         return false;
     }
 
-    // Métodos de Material
+    //!CATEGORÍA
+        public Categoria crearCategoria(String nombre) {
+            Categoria categoria = new Categoria();
+            categoria.setNombre(nombre);
+            int id = categorias.size() + 1;
+            categoria.setId(id);
+            categorias.put(id, categoria);
+            return categoria;
+        }
+    
+        public boolean editarCategoria(int idCategoria, String nuevoNombre) {
+            Categoria categoria = categorias.get(idCategoria);
+            if (categoria != null) {
+                categoria.setNombre(nuevoNombre);
+                return true;
+            }
+            return false;
+        }
+       
+        public List<Categoria> obtenerTodasLasCategorias() {
+            return new ArrayList<>(categorias.values());
+        }
+    
+        public boolean eliminarCategoria(int idCategoria) {
+            if (categorias.containsKey(idCategoria)) {
+                categorias.remove(idCategoria);
+                return true;
+            }
+            return false;
+        }
+    
+        public boolean hayCategoriasDisponibles() {
+            return !categorias.isEmpty();
+        }
+    
+        public Categoria obtenerCategoriaPorId(int idCategoria) {
+            return categorias.get(idCategoria);
+        }
+
+    //!MATERIAL
     public Material crearMaterial(String nombre, Categoria categoria, String proveedor, String ubicacion) {
         Material material = new Material();
         material.setNombre(nombre);
@@ -48,10 +88,14 @@ public class ControladorInventario {
         return material;
     }
 
+    public List<Material> obtenerTodosLosMateriales() {
+      return new ArrayList<>(materiales.values());
+  }
+    
     public Material consultarMaterial(int idMaterial) {
         return materiales.get(idMaterial);
     }
-
+    
     public boolean editarMaterial(int idMaterial, Material datosMaterial) {
         Material material = materiales.get(idMaterial);
         if (material != null) {
@@ -63,7 +107,7 @@ public class ControladorInventario {
         }
         return false;
     }
-
+    
     public boolean eliminarMaterial(int idMaterial) {
         if (materiales.containsKey(idMaterial)) {
             materiales.remove(idMaterial);
@@ -71,8 +115,8 @@ public class ControladorInventario {
         }
         return false;
     }
-
-    // Métodos de Movimiento
+    
+    //!MOVIMIENTO
     public boolean registrarMovimiento(String tipo, Material material, int cantidad, String motivo, Usuario responsable) {
         Movimiento movimiento = new Movimiento();
         movimiento.setTipo(tipo);
@@ -84,56 +128,15 @@ public class ControladorInventario {
         movimientos.put(id, movimiento);
         return true;
     }
+    
+    public List<Movimiento> obtenerTodosLosMovimientos() {
+        return new ArrayList<>(movimientos.values());
+    }
 
     public Movimiento consultarMovimiento(int idMovimiento) {
         return movimientos.get(idMovimiento);
     }
 
-    // Métodos de Categoría
-    public Categoria crearCategoria(String nombre) {
-        Categoria categoria = new Categoria();
-        categoria.setNombre(nombre);
-        int id = categorias.size() + 1;
-        categoria.setId(id);
-        categorias.put(id, categoria);
-        return categoria;
-    }
 
-    public boolean editarCategoria(int idCategoria, String nuevoNombre) {
-        Categoria categoria = categorias.get(idCategoria);
-        if (categoria != null) {
-            categoria.setNombre(nuevoNombre);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean eliminarCategoria(int idCategoria) {
-        if (categorias.containsKey(idCategoria)) {
-            categorias.remove(idCategoria);
-            return true;
-        }
-        return false;
-    }
-
-      public List<Material> obtenerTodosLosMateriales() {
-        return new ArrayList<>(materiales.values());
-    }
-
-    public List<Movimiento> obtenerTodosLosMovimientos() {
-        return new ArrayList<>(movimientos.values());
-    }
-
-    public List<Categoria> obtenerTodasLasCategorias() {
-        return new ArrayList<>(categorias.values());
-    }
-
-    public boolean hayCategoriasDisponibles() {
-        return !categorias.isEmpty();
-    }
-
-    public Categoria obtenerCategoriaPorId(int idCategoria) {
-        return categorias.get(idCategoria);
-    }
 }
 
