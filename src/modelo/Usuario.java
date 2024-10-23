@@ -12,6 +12,9 @@ public class Usuario {
 
 //* FALTA CREAR USUARIO
 
+public Usuario(String nombreUsuario) {
+    this.nombreUsuario = nombreUsuario;
+}
 
     /**
      * Obtiene el nombre de usuario.
