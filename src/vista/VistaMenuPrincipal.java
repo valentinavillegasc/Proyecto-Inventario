@@ -10,8 +10,8 @@ public class VistaMenuPrincipal extends JFrame {
     private ControladorInventario controlador;
 
     public VistaMenuPrincipal(ControladorInventario controlador) {
-        this.controlador = controlador;  // Guardamos el controlador
-        setTitle("Menú Principal");
+        this.controlador = controlador; 
+        setTitle("Inventario");
         setSize(800, 600);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,10 +22,9 @@ public class VistaMenuPrincipal extends JFrame {
 
         contentPanel = new JPanel(new CardLayout());
 
-        contentPanel.add(new VistaInventario(controlador).createVerCategoriasPanel(), "Ver Categorías");
-        contentPanel.add(new VistaInventario(controlador).createVerMaterialesPanel(), "Ver Materiales");
-        contentPanel.add(new VistaInventario(controlador).createRegistrarMovimientoPanel(), "Registrar Movimiento");
-
+        contentPanel.add(new VistaInventario(controlador).createVerCategoriasPanel(), "Categorías");
+        contentPanel.add(new VistaInventario(controlador).createVerMaterialesPanel(), "Materiales");
+        contentPanel.add(new VistaInventario(controlador).createVerMovimientosPanel(), "Movimientos");
         add(sideMenu, BorderLayout.WEST);
         add(contentPanel, BorderLayout.CENTER);
     }
@@ -35,15 +34,17 @@ public class VistaMenuPrincipal extends JFrame {
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
         sidePanel.setPreferredSize(new Dimension(150, getHeight()));
 
-        JButton verCategoriasButton = new JButton("Ver Categorías");
-        JButton verMaterialesButton = new JButton("Ver Materiales");
+        JButton verCategoriasButton = new JButton("Categorías");
+        JButton verMaterialesButton = new JButton("Materiales");
+        JButton verMovimientosButton = new JButton("Movimientos");
 
-        verCategoriasButton.addActionListener(e -> showPanel("Ver Categorías"));
-        verMaterialesButton.addActionListener(e -> showPanel("Ver Materiales"));
+        verCategoriasButton.addActionListener(e -> showPanel("Categorías"));
+        verMaterialesButton.addActionListener(e -> showPanel("Materiales"));
+        verMovimientosButton.addActionListener(e -> showPanel("Movimientos"));
 
         sidePanel.add(verCategoriasButton);
         sidePanel.add(verMaterialesButton);
-        
+        sidePanel.add(verMovimientosButton);
 
         return sidePanel;
     }
