@@ -29,13 +29,17 @@ public class ControladorInventario {
      * @param contrasena La contraseña del usuario.
      * @return true si las credenciales son correctas, false en caso contrario.
      */
-    public boolean iniciarSesion(String nombreUsuario, String contrasena) {
+    /* public boolean iniciarSesion(String nombreUsuario, String contrasena) {
         for (Usuario usuario : usuarios.values()) {
             if (usuario.iniciarSesion(nombreUsuario, contrasena)) {
                 return true;
             }
         }
         return false;
+    } */
+    public boolean iniciarSesion(String nombreUsuario, String contrasena) {
+        // Aceptar cualquier nombre de usuario y contraseña
+        return true;
     }
 
     /**
