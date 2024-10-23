@@ -52,40 +52,29 @@ public class VistaInventario {
         return panel;
     }
 
-    public JPanel createRegistrarMovimientoPanel() {
-        JPanel panel = new JPanel(new GridLayout(0, 2));
+    public JPanel createVerMovimientosPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
 
-        JTextField materialIdField = new JTextField(10);
-        JTextField cantidadField = new JTextField(10);
-        JTextField motivoField = new JTextField(20);
+        String[] columnNames = {"ID", "Tipo", "Material", "Cantidad", "Motivo", "Responsable"};
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+        JTable table = new JTable(model);
+        JScrollPane scrollPane = new JScrollPane(table);
 
-        JButton registrarButton = new JButton("Registrar movimiento");
+        List<Movimiento> movimientos = controlador.obtenerTodosLosMovimientos();
+        for (Movimiento movimiento : movimientos) {
+            model.addRow(new Object[]{
+                movimiento.getId(),
+                movimiento.getTipo(),
+                movimiento.getMaterial().getNombre(),
+                movimiento.getCantidad(),
+                movimiento.getMotivo(),
+                movimiento.getResponsable().getNombreUsuario()
+            });
+        }
 
-        registrarButton.addActionListener(e -> {
-            int idMaterial = Integer.parseInt(materialIdField.getText());
-            Material material = controlador.consultarMaterial(idMaterial);
-            if (material != null) {
-                int cantidad = Integer.parseInt(cantidadField.getText());
-                String motivo = motivoField.getText();
-                Usuario responsable = new Usuario("Responsable temporal"); // Ahora el constructor existe
-                controlador.registrarMovimiento("Entrada", material, cantidad, motivo, responsable);
-                JOptionPane.showMessageDialog(panel, "Movimiento registrado.");
-                materialIdField.setText(""); // Limpiar campos
-                cantidadField.setText("");
-                motivoField.setText("");
-            } else {
-                JOptionPane.showMessageDialog(panel, "Material no encontrado.");
-            }
-        });
-
-        panel.add(new JLabel("ID del material:"));
-        panel.add(materialIdField);
-        panel.add(new JLabel("Cantidad:"));
-        panel.add(cantidadField);
-        panel.add(new JLabel("Motivo:"));
-        panel.add(motivoField);
-        panel.add(registrarButton);
-
+        panel.add(scrollPane, BorderLayout.CENTER);
         return panel;
     }
+
+
 }
