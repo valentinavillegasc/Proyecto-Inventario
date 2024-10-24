@@ -10,26 +10,92 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class VistaInventario {
     private ControladorInventario controlador;
-
+    private DefaultTableModel categoriaTableModel;
     public VistaInventario(ControladorInventario controlador) {
         this.controlador = controlador;
     }
 
+    private void abrirFormularioAgregarCategoria() {
+        JFrame frameFormulario = new JFrame("Agregar Categoría");
+        frameFormulario.setSize(300, 200);
+        frameFormulario.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frameFormulario.setLocationRelativeTo(null);
+
+        JPanel panelFormulario = new JPanel(new GridLayout(3, 2));
+
+        JLabel labelNombre = new JLabel("Nombre de la Categoría:");
+        JTextField campoNombre = new JTextField(15);
+
+        JButton botonGuardar = new JButton("Guardar");
+        botonGuardar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nombreCategoria = campoNombre.getText();
+                if (!nombreCategoria.isEmpty()) {
+                    // Llamar al método crearCategoria del controlador
+                    controlador.crearCategoria(nombreCategoria);
+
+                    // Actualizar la tabla de categorías después de guardar
+                    actualizarTablaCategorias();
+
+                    // Cerrar el formulario después de guardar
+                    JOptionPane.showMessageDialog(frameFormulario, "Categoría creada con éxito.");
+                    frameFormulario.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(frameFormulario, "El nombre no puede estar vacío.");
+                }
+            }
+        });
+
+        // Añadir componentes al formulario
+        panelFormulario.add(labelNombre);
+        panelFormulario.add(campoNombre);
+        panelFormulario.add(new JLabel());  // Espacio vacío
+        panelFormulario.add(botonGuardar);
+
+        frameFormulario.add(panelFormulario);
+        frameFormulario.setVisible(true);
+    }
+
+    private void actualizarTablaCategorias() {
+        categoriaTableModel.setRowCount(0);  // Limpiar filas actuales
+        List<Categoria> categorias = controlador.obtenerTodasLasCategorias();
+        for (Categoria categoria : categorias) {
+            categoriaTableModel.addRow(new Object[]{categoria.getId(), categoria.getNombre()});
+        }
+    }
+
+  
     public JPanel createVerCategoriasPanel() {
         JPanel panel = new JPanel(new BorderLayout());
 
+        // Crear el botón "Agregar"
+        JButton botonAgregar = new JButton("Agregar");
+        botonAgregar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Abrir el formulario para agregar nueva categoría
+                abrirFormularioAgregarCategoria();
+            }
+        });
+
+        // Panel para contener el botón "Agregar" en la parte superior
+        JPanel panelSuperior = new JPanel();
+        panelSuperior.add(botonAgregar);
+        panel.add(panelSuperior, BorderLayout.NORTH);
+
         String[] columnNames = {"ID", "Nombre"};
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-        JTable table = new JTable(model);
+        categoriaTableModel = new DefaultTableModel(columnNames, 0);  // Instanciar el modelo aquí
+        JTable table = new JTable(categoriaTableModel);
         JScrollPane scrollPane = new JScrollPane(table);
 
-        List<Categoria> categorias = controlador.obtenerTodasLasCategorias();
-        for (Categoria categoria : categorias) {
-            model.addRow(new Object[]{categoria.getId(), categoria.getNombre()});
-        }
+        // Llenar la tabla con los datos iniciales
+        actualizarTablaCategorias();
 
         panel.add(scrollPane, BorderLayout.CENTER);
         return panel;
