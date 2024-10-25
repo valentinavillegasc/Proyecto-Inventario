@@ -261,10 +261,11 @@ public boolean actualizarCategoria(int idCategoria, String nuevoNombre) {
     
     //!MOVIMIENTO
 
-    public Movimiento crearMovimiento(String tipo, String motivo, Material material, int cantidad, Usuario responsable, String ubicacion) {
-        Movimiento movimiento = new Movimiento(tipo, motivo, material, cantidad, responsable);
-        movimiento.setTipo(tipo);
+    public Movimiento crearMovimiento(String tipo, String motivo, Material material, int cantidad, Usuario responsable, LocalDateTime fecha) {
+        // Crear el movimiento con la fecha proporcionada
+        Movimiento movimiento = new Movimiento(tipo, motivo, material, cantidad, responsable, fecha);
         
+        // Configuración adicional del movimiento
         try {
             movimiento.setMotivo(motivo);
         } catch (IllegalArgumentException e) {
@@ -275,8 +276,6 @@ public boolean actualizarCategoria(int idCategoria, String nuevoNombre) {
         movimiento.setMaterial(material);
         movimiento.setCantidad(cantidad);
         movimiento.setResponsable(responsable);
-        movimiento.setUbicacion(ubicacion);
-        movimiento.setFecha(LocalDateTime.now());
         
         // Agregar movimiento al mapa
         movimientos.put(movimientos.size() + 1, movimiento); // Asignar ID como el tamaño actual + 1
@@ -290,6 +289,7 @@ public boolean actualizarCategoria(int idCategoria, String nuevoNombre) {
         
         return movimiento;
     }
+    
     
     
     

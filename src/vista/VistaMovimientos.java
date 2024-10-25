@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class VistaMovimientos {
@@ -19,7 +20,7 @@ public class VistaMovimientos {
 
     public VistaMovimientos(ControladorInventario controlador) {
         this.controlador = controlador;
-        this.model = new DefaultTableModel(new String[]{"ID", "Tipo", "Material", "Cantidad", "Motivo", "Responsable"}, 0);
+        this.model = new DefaultTableModel(new String[]{"ID", "Tipo", "Material", "Cantidad", "Motivo", "Responsable", "Fecha"}, 0); // Nueva columna de fecha
         this.table = new JTable(model);
     }
 
@@ -56,7 +57,8 @@ public class VistaMovimientos {
                 movimiento.getMaterial().getNombre(),
                 movimiento.getCantidad(),
                 movimiento.getMotivo(),
-                movimiento.getResponsable().getNombreUsuario()
+                movimiento.getResponsable().getNombreUsuario(),
+                movimiento.getFechaFormateada() // Usar el nuevo método para obtener la fecha formateada
             });
         }
         System.out.println("Movimientos cargados: " + movimientos.size()); // Para depuración
@@ -111,8 +113,9 @@ public class VistaMovimientos {
                 
                 String motivo = (String) comboMotivo.getSelectedItem();
                 Usuario responsable = (Usuario) comboResponsable.getSelectedItem();
+                LocalDateTime fecha = LocalDateTime.now(); // Obtén la fecha actual
 
-                controlador.crearMovimiento(tipo, motivo, material, cantidad, responsable, null);
+                controlador.crearMovimiento(tipo, motivo, material, cantidad, responsable, fecha);
                 JOptionPane.showMessageDialog(frameFormulario, "Movimiento agregado con éxito.");
                 frameFormulario.dispose();
 
