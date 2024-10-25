@@ -14,6 +14,7 @@ public class VistaLogin extends JFrame {
     public VistaLogin() {
         this(null); 
     }
+    
     public VistaLogin(ControladorInventario controlador) {
         this.controlador = controlador;
 
@@ -49,11 +50,21 @@ public class VistaLogin extends JFrame {
             }
         });
 
+        JButton botonRegistrar = new JButton("Registrarse");
+        botonRegistrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VistaRegistro registro = new VistaRegistro(controlador);
+                registro.setVisible(true);
+            }
+        });
+
         panelFormulario.add(etiquetaUsuario);
         panelFormulario.add(campoUsuario);
         panelFormulario.add(etiquetaContrasena);
         panelFormulario.add(campoContrasena);
         panelFormulario.add(botonIniciarSesion);
+        panelFormulario.add(botonRegistrar); // Agregar el botón de registrarse al panel
 
         add(panelFormulario, BorderLayout.CENTER);
     }
