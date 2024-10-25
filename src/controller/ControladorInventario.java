@@ -244,9 +244,9 @@ public List<Usuario> obtenerTodosLosUsuarios() {
     //!MOVIMIENTO
 
     public Movimiento crearMovimiento(String tipo, String motivo, Material material, int cantidad, Usuario responsable, String ubicacion) {
-        Movimiento movimiento = new Movimiento();
+        Movimiento movimiento = new Movimiento(tipo, motivo, material, cantidad, responsable);
         movimiento.setTipo(tipo);
-    
+        
         try {
             movimiento.setMotivo(motivo);
         } catch (IllegalArgumentException e) {
@@ -259,16 +259,20 @@ public List<Usuario> obtenerTodosLosUsuarios() {
         movimiento.setResponsable(responsable);
         movimiento.setUbicacion(ubicacion);
         movimiento.setFecha(LocalDateTime.now());
-    
+        
+        // Agregar movimiento al mapa
+        movimientos.put(movimientos.size() + 1, movimiento); // Asignar ID como el tamaño actual + 1
+        
         // Actualizar el stock del material según el tipo de movimiento
         if (tipo.equalsIgnoreCase("entrada")) {
             material.setStock(material.getStock() + cantidad); // Aumentar stock
         } else if (tipo.equalsIgnoreCase("salida")) {
             material.setStock(material.getStock() - cantidad); // Disminuir stock
         }
-    
+        
         return movimiento;
     }
+    
     
     
     /**

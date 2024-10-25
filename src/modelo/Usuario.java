@@ -10,17 +10,21 @@ public class Usuario {
     private String rol;
     private String nombre;
 
-//* FALTA CREAR USUARIO
 
-    /**
-     * Constructor para crear un nuevo usuario con un nombre de usuario.
-     *
-     * @param nombreUsuario El nombre de usuario único que se utilizará para iniciar sesión.
-     */
-
-    public Usuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
+    public Usuario(String nombre) {
+        this.nombreUsuario = nombre;
     }
+
+    public String getNombre() {
+        return nombreUsuario;
+    }
+
+    @Override
+    public String toString() {
+        return nombreUsuario; // Devuelve el nombre de usuario
+    }
+
+   
 
     public Usuario() {
         

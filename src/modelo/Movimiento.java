@@ -30,6 +30,13 @@ public class Movimiento {
     private LocalDateTime fecha;
     private String ubicacion;
 
+    public Movimiento(String tipo, String motivo, Material material, int cantidad, Usuario responsable) {
+        this.tipo = tipo;
+        this.motivo = motivo;
+        this.material = material;
+        this.cantidad = cantidad;
+        this.responsable = responsable;
+    }
     /**
      * Obtiene el identificador único del movimiento.
      *

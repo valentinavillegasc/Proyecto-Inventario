@@ -14,9 +14,13 @@ import java.util.List;
 
 public class VistaMovimientos {
     private ControladorInventario controlador;
+    private DefaultTableModel model; // Modelo de la tabla
+    private JTable table; // Tabla de movimientos
 
     public VistaMovimientos(ControladorInventario controlador) {
         this.controlador = controlador;
+        this.model = new DefaultTableModel(new String[]{"ID", "Tipo", "Material", "Cantidad", "Motivo", "Responsable"}, 0);
+        this.table = new JTable(model);
     }
 
     public JPanel createVerMovimientosPanel() {
@@ -26,7 +30,7 @@ public class VistaMovimientos {
         botonAgregarMovimiento.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-              /*   abrirFormularioAgregarMovimiento(); */
+                abrirFormularioAgregarMovimiento();
             }
         });
 
@@ -34,11 +38,16 @@ public class VistaMovimientos {
         panelSuperior.add(botonAgregarMovimiento);
         panel.add(panelSuperior, BorderLayout.NORTH);
 
-        String[] columnNames = {"ID", "Tipo", "Material", "Cantidad", "Motivo", "Responsable"};
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-        JTable table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
+        panel.add(scrollPane, BorderLayout.CENTER);
 
+        cargarMovimientos(); // Cargar los movimientos al inicializar
+
+        return panel;
+    }
+
+    private void cargarMovimientos() {
+        model.setRowCount(0); // Limpiar filas existentes
         List<Movimiento> movimientos = controlador.obtenerTodosLosMovimientos();
         for (Movimiento movimiento : movimientos) {
             model.addRow(new Object[]{
@@ -50,21 +59,23 @@ public class VistaMovimientos {
                 movimiento.getResponsable().getNombreUsuario()
             });
         }
-
-        panel.add(scrollPane, BorderLayout.CENTER);
-        return panel;
+        System.out.println("Movimientos cargados: " + movimientos.size()); // Para depuración
     }
-/* 
+
     private void abrirFormularioAgregarMovimiento() {
         JFrame frameFormulario = new JFrame("Agregar Movimiento");
-        frameFormulario.setSize(400, 300);
+        frameFormulario.setSize(400, 250);
         frameFormulario.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frameFormulario.setLocationRelativeTo(null);
 
-        JPanel panelFormulario = new JPanel(new GridLayout(5, 2));
+        JPanel panelFormulario = new JPanel(new GridLayout(6, 2));
 
         JLabel labelTipo = new JLabel("Tipo:");
         JComboBox<String> comboTipo = new JComboBox<>(new String[]{"Entrada", "Salida"});
+
+        JLabel labelMotivo = new JLabel("Motivo:");
+        JComboBox<String> comboMotivo = new JComboBox<>();
+        comboTipo.addActionListener(e -> actualizarMotivos(comboTipo, comboMotivo));
 
         JLabel labelMaterial = new JLabel("Material:");
         JComboBox<Material> comboMaterial = new JComboBox<>();
@@ -75,9 +86,6 @@ public class VistaMovimientos {
 
         JLabel labelCantidad = new JLabel("Cantidad:");
         JTextField campoCantidad = new JTextField(10);
-
-        JLabel labelMotivo = new JLabel("Motivo:");
-        JTextField campoMotivo = new JTextField(10);
 
         JLabel labelResponsable = new JLabel("Responsable:");
         JComboBox<Usuario> comboResponsable = new JComboBox<>();
@@ -92,30 +100,56 @@ public class VistaMovimientos {
             public void actionPerformed(ActionEvent e) {
                 String tipo = (String) comboTipo.getSelectedItem();
                 Material material = (Material) comboMaterial.getSelectedItem();
-                int cantidad = Integer.parseInt(campoCantidad.getText());
-                String motivo = campoMotivo.getText();
+                int cantidad;
+                
+                try {
+                    cantidad = Integer.parseInt(campoCantidad.getText());
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(frameFormulario, "Por favor ingresa una cantidad válida.");
+                    return;
+                }
+                
+                String motivo = (String) comboMotivo.getSelectedItem();
                 Usuario responsable = (Usuario) comboResponsable.getSelectedItem();
-                String campoUbicacion;
-                String ubicacion = campoUbicacion.getText();
-                controlador.crearMovimiento( tipo,  motivo,  material,  cantidad,  responsable, ubicacion);
+
+                controlador.crearMovimiento(tipo, motivo, material, cantidad, responsable, null);
                 JOptionPane.showMessageDialog(frameFormulario, "Movimiento agregado con éxito.");
                 frameFormulario.dispose();
+
+                cargarMovimientos(); // Recargar los movimientos después de agregar
             }
         });
 
         panelFormulario.add(labelTipo);
         panelFormulario.add(comboTipo);
+        panelFormulario.add(labelMotivo);
+        panelFormulario.add(comboMotivo);
         panelFormulario.add(labelMaterial);
         panelFormulario.add(comboMaterial);
         panelFormulario.add(labelCantidad);
         panelFormulario.add(campoCantidad);
-        panelFormulario.add(labelMotivo);
-        panelFormulario.add(campoMotivo);
         panelFormulario.add(labelResponsable);
         panelFormulario.add(comboResponsable);
         panelFormulario.add(botonGuardar);
 
         frameFormulario.add(panelFormulario);
         frameFormulario.setVisible(true);
-    } */
+
+        actualizarMotivos(comboTipo, comboMotivo);
+    }
+
+    private void actualizarMotivos(JComboBox<String> comboTipo, JComboBox<String> comboMotivo) {
+        comboMotivo.removeAllItems();
+        String tipoSeleccionado = (String) comboTipo.getSelectedItem();
+
+        if ("Entrada".equals(tipoSeleccionado)) {
+            for (String motivo : Movimiento.MOTIVOS_ENTRADA) {
+                comboMotivo.addItem(motivo);
+            }
+        } else if ("Salida".equals(tipoSeleccionado)) {
+            for (String motivo : Movimiento.MOTIVOS_SALIDA) {
+                comboMotivo.addItem(motivo);
+            }
+        }
+    }
 }
