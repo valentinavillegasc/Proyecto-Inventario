@@ -81,6 +81,15 @@ public boolean crearUsuario(String nombre, String username, String password) {
         }
         return false;
     }
+    /**
+ * Obtiene todos los usuarios registrados.
+ * 
+ * @return Una lista de todos los usuarios.
+ */
+public List<Usuario> obtenerTodosLosUsuarios() {
+    return new ArrayList<>(usuarios.values());
+}
+
 
     //!CATEGORÍA
 
@@ -234,39 +243,33 @@ public boolean crearUsuario(String nombre, String username, String password) {
     
     //!MOVIMIENTO
 
-    /**
-     * Crea un nuevo movimiento en el inventario (entrada o salida).
-     *
-     * @param tipo        el tipo de movimiento ("entrada" o "salida").
-     * @param motivo      el motivo del movimiento (debe coincidir con el tipo).
-     * @param material    el material involucrado en el movimiento.
-     * @param cantidad    la cantidad de material involucrada.
-     * @param responsable el usuario responsable de realizar el movimiento.
-     * @param ubicacion   la ubicación donde se realizó el movimiento.
-     * @return el movimiento creado, o null si hubo un error en la validación del motivo.
-     * @throws IllegalArgumentException si el tipo de movimiento o el motivo no son válidos.
-     */
     public Movimiento crearMovimiento(String tipo, String motivo, Material material, int cantidad, Usuario responsable, String ubicacion) {
         Movimiento movimiento = new Movimiento();
-
         movimiento.setTipo(tipo);
-
+    
         try {
             movimiento.setMotivo(motivo);
         } catch (IllegalArgumentException e) {
             System.out.println("Error: " + e.getMessage());
             return null;  
         }
-
+    
         movimiento.setMaterial(material);
         movimiento.setCantidad(cantidad);
         movimiento.setResponsable(responsable);
         movimiento.setUbicacion(ubicacion);
-        movimiento.setFecha(LocalDateTime.now());  
-
-
+        movimiento.setFecha(LocalDateTime.now());
+    
+        // Actualizar el stock del material según el tipo de movimiento
+        if (tipo.equalsIgnoreCase("entrada")) {
+            material.setStock(material.getStock() + cantidad); // Aumentar stock
+        } else if (tipo.equalsIgnoreCase("salida")) {
+            material.setStock(material.getStock() - cantidad); // Disminuir stock
+        }
+    
         return movimiento;
     }
+    
     
     /**
      * Obtiene la lista de motivos válidos según el tipo de movimiento.

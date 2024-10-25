@@ -22,9 +22,9 @@ public class VistaMenuPrincipal extends JFrame {
 
         contentPanel = new JPanel(new CardLayout());
 
-        contentPanel.add(new VistaInventario(controlador).createVerCategoriasPanel(), "Categorías");
-        contentPanel.add(new VistaInventario(controlador).createVerMaterialesPanel(), "Materiales");
-        contentPanel.add(new VistaInventario(controlador).createVerMovimientosPanel(), "Movimientos");
+        contentPanel.add(new VistaCategorias(controlador).createVerCategoriasPanel(), "Categorías");
+        contentPanel.add(new VistaMateriales(controlador).createVerMaterialesPanel(), "Materiales");
+        contentPanel.add(new VistaMovimientos(controlador).createVerMovimientosPanel(), "Movimientos");
         add(sideMenu, BorderLayout.WEST);
         add(contentPanel, BorderLayout.CENTER);
     }
