@@ -37,8 +37,8 @@ public class VistaLogin extends JFrame {
         botonIniciarSesion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String usuario = campoUsuario.getText();
-                String contrasena = new String(campoContrasena.getPassword());
+                String usuario = campoUsuario.getText().trim();
+                String contrasena = new String(campoContrasena.getPassword()).trim();
 
                 if (controlador.iniciarSesion(usuario, contrasena)) {
                     VistaMenuPrincipal menuPrincipal = new VistaMenuPrincipal(controlador);

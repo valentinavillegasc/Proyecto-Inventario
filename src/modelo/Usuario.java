@@ -108,6 +108,7 @@ public class Usuario {
     public boolean iniciarSesion(String nombreUsuario, String contrasena) {
         return this.nombreUsuario.equals(nombreUsuario) && this.contrasena.equals(contrasena);
     }
+    
 
     /**
      * Restablece la contraseña del usuario si el nombre de usuario coincide.
