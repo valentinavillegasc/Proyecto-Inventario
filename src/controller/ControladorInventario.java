@@ -166,6 +166,24 @@ public List<Usuario> obtenerTodosLosUsuarios() {
         return categorias.get(idCategoria);
     }
 
+    /**
+ * Actualiza el nombre de una categoría existente, manteniendo su ID sin cambios.
+ *
+ * @param idCategoria El ID de la categoría a actualizar.
+ * @param nuevoNombre El nuevo nombre para la categoría.
+ * @return true si la categoría fue actualizada correctamente, false si no se encontró.
+ */
+public boolean actualizarCategoria(int idCategoria, String nuevoNombre) {
+    Categoria categoria = categorias.get(idCategoria);
+    if (categoria != null) {
+        categoria.setNombre(nuevoNombre); // Cambia solo el nombre
+        return true;
+    }
+    return false;
+}
+
+
+
     //!MATERIAL
 
     /**
