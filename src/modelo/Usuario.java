@@ -8,40 +8,63 @@ public class Usuario {
 
     // Definimos los roles como un enum
     public enum Rol {
-        ALMACENISTA,
-        ADMINISTRADOR
+        ALMACENISTA,  // Rol para el almacén
+        ADMINISTRADOR  // Rol para el administrador
     }
 
-    private int id;
-    private String nombreUsuario;
-    private String contrasena;
-    private Rol rol;  // Cambiado a tipo Rol
-    private String nombre;
+    private int id;  // Identificador único del usuario
+    private String nombreUsuario;  // Nombre de usuario
+    private String contrasena;  // Contraseña del usuario
+    private Rol rol;  // Rol del usuario
+    private String nombre;  // Nombre completo del usuario
 
-    // Constructor que permite establecer el rol
+    /**
+     * Constructor que permite establecer el rol del usuario.
+     *
+     * @param nombreUsuario el nombre de usuario del nuevo usuario.
+     * @param contrasena la contraseña del nuevo usuario.
+     * @param nombre el nombre completo del nuevo usuario.
+     * @param rol el rol del nuevo usuario (Almacén o Administrador).
+     */
     public Usuario(String nombreUsuario, String contrasena, String nombre, Rol rol) {
-        this.nombreUsuario = nombreUsuario;
-        this.contrasena = contrasena;
-        this.nombre = nombre;
+        this.nombreUsuario = nombreUsuario;  // Inicializa el nombre de usuario
+        this.contrasena = contrasena;  // Inicializa la contraseña
+        this.nombre = nombre;  // Inicializa el nombre completo
         this.rol = rol;  // Inicializa el rol
     }
 
-    // Constructor solo con el nombre de usuario
+    /**
+     * Constructor que permite crear un usuario solo con el nombre de usuario.
+     *
+     * @param nombre el nombre de usuario.
+     */
     public Usuario(String nombre) {
-        this.nombreUsuario = nombre;
+        this.nombreUsuario = nombre;  // Inicializa el nombre de usuario
     }
 
+    /**
+     * Constructor vacío.
+     */
     public Usuario() {
-        
     }
 
+    /**
+     * Obtiene el nombre de usuario.
+     *
+     * @return el nombre de usuario.
+     */
     public String getNombre() {
-        return nombreUsuario;
+        return nombreUsuario;  // Retorna el nombre de usuario
     }
 
+    /**
+     * Devuelve una representación en cadena del usuario.
+     *
+     * @return el nombre de usuario como cadena.
+     */
     @Override
     public String toString() {
-        return nombreUsuario; // Devuelve el nombre de usuario
+        return nombreUsuario;  // Devuelve el nombre de usuario
     }
 
     /**
@@ -50,7 +73,7 @@ public class Usuario {
      * @return el nombre de usuario.
      */
     public String getNombreUsuario() {
-        return nombreUsuario;
+        return nombreUsuario;  // Retorna el nombre de usuario
     }
 
     /**
@@ -59,7 +82,7 @@ public class Usuario {
      * @param nombreUsuario el nombre de usuario a establecer.
      */
     public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
+        this.nombreUsuario = nombreUsuario;  // Asigna el nuevo nombre de usuario
     }
 
     /**
@@ -68,7 +91,7 @@ public class Usuario {
      * @return la contraseña del usuario.
      */
     public String getContrasena() {
-        return contrasena;
+        return contrasena;  // Retorna la contraseña
     }
 
     /**
@@ -77,7 +100,7 @@ public class Usuario {
      * @param contrasena la contraseña a establecer.
      */
     public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
+        this.contrasena = contrasena;  // Asigna la nueva contraseña
     }
 
     /**
@@ -86,7 +109,7 @@ public class Usuario {
      * @return el rol del usuario.
      */
     public Rol getRol() {
-        return rol;
+        return rol;  // Retorna el rol del usuario
     }
 
     /**
@@ -95,7 +118,7 @@ public class Usuario {
      * @param rol el rol a establecer.
      */
     public void setRol(Rol rol) {
-        this.rol = rol;
+        this.rol = rol;  // Asigna el nuevo rol al usuario
     }
 
     /**
@@ -106,9 +129,8 @@ public class Usuario {
      * @return true si las credenciales coinciden, false en caso contrario.
      */
     public boolean iniciarSesion(String nombreUsuario, String contrasena) {
-        return this.nombreUsuario.equals(nombreUsuario) && this.contrasena.equals(contrasena);
+        return this.nombreUsuario.equals(nombreUsuario) && this.contrasena.equals(contrasena);  // Verifica las credenciales
     }
-    
 
     /**
      * Restablece la contraseña del usuario si el nombre de usuario coincide.
@@ -119,10 +141,10 @@ public class Usuario {
      */
     public boolean restablecerContrasena(String nombreUsuario, String nuevaContrasena) {
         if (this.nombreUsuario.equals(nombreUsuario)) {
-            this.contrasena = nuevaContrasena;
-            return true;
+            this.contrasena = nuevaContrasena;  // Asigna la nueva contraseña
+            return true;  // Indica que se ha restablecido correctamente
         }
-        return false;
+        return false;  // Indica que el nombre de usuario no coincide
     }
 
     /**
@@ -131,6 +153,6 @@ public class Usuario {
      * @return true si la sesión se cerró correctamente.
      */
     public boolean cerrarSesion() {
-        return true;
+        return true;  // Método placeholder para cerrar sesión
     }
 }
