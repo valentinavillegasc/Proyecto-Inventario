@@ -39,12 +39,14 @@ public class ControladorInventario {
 public boolean crearUsuario(String nombre, String username, String password, Usuario.Rol rol) {
     // Verifica si el nombre de usuario ya existe
     if (!usuarios.containsKey(username)) {
-        Usuario nuevoUsuario = new Usuario(nombre, username, password, rol); // Agregar rol al constructor
+        // Asegúrate de que los parámetros estén en el orden correcto:
+        Usuario nuevoUsuario = new Usuario(username, password, nombre, rol); // Ajuste en el orden de parámetros
         usuarios.put(username, nuevoUsuario); // Almacenar en el mapa de usuarios
         return true; // Usuario creado exitosamente
     }
     return false; // El nombre de usuario ya existe
 }
+
 
 
     /**
@@ -63,10 +65,18 @@ public boolean crearUsuario(String nombre, String username, String password, Usu
         return false;
     } */
     public boolean iniciarSesion(String nombreUsuario, String contrasena) {
-        // Aceptar cualquier nombre de usuario y contraseña
-        return true;
+        Usuario usuario = usuarios.get(nombreUsuario);
+        if (usuario != null) {
+            System.out.println("Contraseña guardada: '" + usuario.getContrasena() + "'");
+            System.out.println("Contraseña ingresada: '" + contrasena + "'");
+            return usuario.getContrasena().equals(contrasena);
+        }
+        return false;
     }
-
+    
+    
+    
+    
     /**
      * Restablece la contraseña del usuario si coincide el nombre de usuario.
      * 
