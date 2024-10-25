@@ -37,15 +37,26 @@ public class VistaMenuPrincipal extends JFrame {
         JButton verCategoriasButton = new JButton("Categorías");
         JButton verMaterialesButton = new JButton("Materiales");
         JButton verMovimientosButton = new JButton("Movimientos");
+        JButton cerrarSesionButton = new JButton("Cerrar sesión");
+
+        cerrarSesionButton.setMaximumSize(new Dimension(120, 30));
 
         verCategoriasButton.addActionListener(e -> showPanel("Categorías"));
         verMaterialesButton.addActionListener(e -> showPanel("Materiales"));
         verMovimientosButton.addActionListener(e -> showPanel("Movimientos"));
 
+        cerrarSesionButton.addActionListener(e -> {
+            dispose();
+            VistaLogin login = new VistaLogin(controlador);
+            login.setVisible(true);
+        });
+
+
         sidePanel.add(verCategoriasButton);
         sidePanel.add(verMaterialesButton);
         sidePanel.add(verMovimientosButton);
-
+        sidePanel.add(Box.createVerticalStrut(20)); 
+        sidePanel.add(cerrarSesionButton); 
         return sidePanel;
     }
 
