@@ -113,6 +113,18 @@ public class VistaMateriales {
         for (Categoria categoria : categorias) {
             comboCategoria.addItem(categoria);
         }
+
+        comboCategoria.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof Categoria) {
+                    Categoria categoria = (Categoria) value;
+                    setText(categoria.getNombre()); // Mostrar solo el nombre de la categoría
+                }
+                return c;
+            }
+        });
         comboCategoria.setSelectedItem(material.getCategoria());
 
         JButton botonGuardar = new JButton("Guardar");
