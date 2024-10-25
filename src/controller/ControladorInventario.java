@@ -36,15 +36,16 @@ public class ControladorInventario {
  * @param password La contraseña que se asignará al usuario.
  * @return true si el usuario fue creado exitosamente, false si el nombre de usuario ya existe.
  */
-public boolean crearUsuario(String nombre, String username, String password) {
-    // Implement user creation logic
+public boolean crearUsuario(String nombre, String username, String password, Usuario.Rol rol) {
+    // Verifica si el nombre de usuario ya existe
     if (!usuarios.containsKey(username)) {
-        Usuario nuevoUsuario = new Usuario(nombre, username, password);
-        usuarios.put(username, nuevoUsuario); // Assume `usuarios` is a Map<String, Usuario>
-        return true; // User created successfully
+        Usuario nuevoUsuario = new Usuario(nombre, username, password, rol); // Agregar rol al constructor
+        usuarios.put(username, nuevoUsuario); // Almacenar en el mapa de usuarios
+        return true; // Usuario creado exitosamente
     }
-    return false; // Username already exists
+    return false; // El nombre de usuario ya existe
 }
+
 
     /**
      * Inicia sesión verificando las credenciales del usuario.
