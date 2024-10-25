@@ -4,7 +4,10 @@ import modelo.Material;
 import modelo.Movimiento;
 import modelo.Categoria;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,13 +17,34 @@ import java.util.Map;
  */
 
 public class ControladorInventario {
-    private Map<Integer, Usuario> usuarios = new HashMap<>();
+    private Map<String, Usuario> usuarios = new HashMap<>();
     private Map<Integer, Material> materiales = new HashMap<>();
     private Map<Integer, Movimiento> movimientos = new HashMap<>();
     private Map<Integer, Categoria> categorias = new HashMap<>();
-
+    
 
     //!USUARIO
+
+    /**
+ * Crea un nuevo usuario en el sistema si el nombre de usuario no existe ya.
+ *
+ * Este método verifica si el nombre de usuario proporcionado ya está registrado en el sistema. 
+ * Si no está presente, crea un nuevo objeto de usuario y lo almacena en el mapa de usuarios.
+ *
+ * @param nombre El nombre completo del usuario que se está registrando.
+ * @param username El nombre de usuario único que se utilizará para iniciar sesión.
+ * @param password La contraseña que se asignará al usuario.
+ * @return true si el usuario fue creado exitosamente, false si el nombre de usuario ya existe.
+ */
+public boolean crearUsuario(String nombre, String username, String password) {
+    // Implement user creation logic
+    if (!usuarios.containsKey(username)) {
+        Usuario nuevoUsuario = new Usuario(nombre, username, password);
+        usuarios.put(username, nuevoUsuario); // Assume `usuarios` is a Map<String, Usuario>
+        return true; // User created successfully
+    }
+    return false; // Username already exists
+}
 
     /**
      * Inicia sesión verificando las credenciales del usuario.
@@ -211,26 +235,54 @@ public class ControladorInventario {
     //!MOVIMIENTO
 
     /**
-     * Registra un movimiento en el inventario (entrada o salida).
-     * 
-     * @param tipo El tipo de movimiento (entrada o salida).
-     * @param material El material involucrado.
-     * @param cantidad La cantidad del movimiento.
-     * @param motivo El motivo del movimiento.
-     * @param responsable El usuario responsable del movimiento.
-     * @return true si el movimiento fue registrado correctamente.
+     * Crea un nuevo movimiento en el inventario (entrada o salida).
+     *
+     * @param tipo        el tipo de movimiento ("entrada" o "salida").
+     * @param motivo      el motivo del movimiento (debe coincidir con el tipo).
+     * @param material    el material involucrado en el movimiento.
+     * @param cantidad    la cantidad de material involucrada.
+     * @param responsable el usuario responsable de realizar el movimiento.
+     * @param ubicacion   la ubicación donde se realizó el movimiento.
+     * @return el movimiento creado, o null si hubo un error en la validación del motivo.
+     * @throws IllegalArgumentException si el tipo de movimiento o el motivo no son válidos.
      */
-    public boolean registrarMovimiento(String tipo, Material material, int cantidad, String motivo, Usuario responsable) {
+    public Movimiento crearMovimiento(String tipo, String motivo, Material material, int cantidad, Usuario responsable, String ubicacion) {
         Movimiento movimiento = new Movimiento();
+
         movimiento.setTipo(tipo);
+
+        try {
+            movimiento.setMotivo(motivo);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+            return null;  
+        }
+
         movimiento.setMaterial(material);
         movimiento.setCantidad(cantidad);
-        movimiento.setMotivo(motivo);
         movimiento.setResponsable(responsable);
-        int id = movimientos.size() + 1;
-        movimientos.put(id, movimiento);
-        return true;
+        movimiento.setUbicacion(ubicacion);
+        movimiento.setFecha(LocalDateTime.now());  
+
+
+        return movimiento;
     }
+    
+    /**
+     * Obtiene la lista de motivos válidos según el tipo de movimiento.
+     *
+     * @param tipo el tipo de movimiento ("entrada" o "salida").
+     * @return una lista de motivos válidos para el tipo de movimiento.
+     */
+    public List<String> obtenerMotivosPorTipo(String tipo) {
+        if ("entrada".equalsIgnoreCase(tipo)) {
+            return Arrays.asList("ajuste entrada", "ingreso", "devolución");
+        } else if ("salida".equalsIgnoreCase(tipo)) {
+            return Arrays.asList("venta", "préstamo");
+        }
+        return Collections.emptyList(); 
+    }
+
     
     /**
      * Obtiene todos los movimientos registrados.

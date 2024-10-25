@@ -12,9 +12,32 @@ public class Usuario {
 
 //* FALTA CREAR USUARIO
 
-public Usuario(String nombreUsuario) {
-    this.nombreUsuario = nombreUsuario;
-}
+    /**
+     * Constructor para crear un nuevo usuario con un nombre de usuario.
+     *
+     * @param nombreUsuario El nombre de usuario único que se utilizará para iniciar sesión.
+     */
+
+    public Usuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public Usuario() {
+        
+    }
+
+    /**
+     * Constructor para crear un nuevo usuario con todos los atributos.
+     *
+     * @param nombreUsuario El nombre de usuario único.
+     * @param contrasena La contraseña del usuario.
+     * @param nombre El nombre completo del usuario.
+     */
+    public Usuario(String nombreUsuario, String contrasena, String nombre) {
+        this.nombreUsuario = nombreUsuario;
+        this.contrasena = contrasena;
+        this.nombre = nombre;
+    }
 
     /**
      * Obtiene el nombre de usuario.
