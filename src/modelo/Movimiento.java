@@ -10,16 +10,16 @@ import java.util.List;
 public class Movimiento {
 
     /** Constante que define el tipo de movimiento como 'entrada'. */
-    public static final String TIPO_ENTRADA = "entrada";
+    public static final String TIPO_ENTRADA = "Entrada";
     
     /** Constante que define el tipo de movimiento como 'salida'. */
-    public static final String TIPO_SALIDA = "salida";
+    public static final String TIPO_SALIDA = "Salida";
     
     /** Lista de motivos válidos para los movimientos de tipo 'entrada'. */
-    public static final List<String> MOTIVOS_ENTRADA = Arrays.asList("ajuste entrada", "ingreso", "devolucion");
+    public static final List<String> MOTIVOS_ENTRADA = Arrays.asList("Ajuste Entrada", "Ingreso", "Devolución");
     
     /** Lista de motivos válidos para los movimientos de tipo 'salida'. */
-    public static final List<String> MOTIVOS_SALIDA = Arrays.asList("venta", "prestamo");
+    public static final List<String> MOTIVOS_SALIDA = Arrays.asList("Venta", "Prestamo");
 
     private int id;
     private String tipo;
