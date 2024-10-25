@@ -15,6 +15,14 @@ public class Material {
     private int salidas;
     private int stock;
 
+
+
+    
+
+    @Override
+    public String toString() {
+        return nombre; // Devuelve el nombre del material
+    }
     /**
      * Obtiene el código del material.
      * 

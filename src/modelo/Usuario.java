@@ -1,42 +1,47 @@
 package modelo;
+
 /**
  * Clase que representa a un usuario dentro del sistema.
  * Un usuario tiene un nombre de usuario, una contraseña, un rol y un nombre.
  */
 public class Usuario {
+
+    // Definimos los roles como un enum
+    public enum Rol {
+        ALMACENISTA,
+        ADMINISTRADOR
+    }
+
     private int id;
     private String nombreUsuario;
     private String contrasena;
-    private String rol;
+    private Rol rol;  // Cambiado a tipo Rol
     private String nombre;
 
-//* FALTA CREAR USUARIO
-
-    /**
-     * Constructor para crear un nuevo usuario con un nombre de usuario.
-     *
-     * @param nombreUsuario El nombre de usuario único que se utilizará para iniciar sesión.
-     */
-
-    public Usuario(String nombreUsuario) {
+    // Constructor que permite establecer el rol
+    public Usuario(String nombreUsuario, String contrasena, String nombre, Rol rol) {
         this.nombreUsuario = nombreUsuario;
+        this.contrasena = contrasena;
+        this.nombre = nombre;
+        this.rol = rol;  // Inicializa el rol
+    }
+
+    // Constructor solo con el nombre de usuario
+    public Usuario(String nombre) {
+        this.nombreUsuario = nombre;
     }
 
     public Usuario() {
         
     }
 
-    /**
-     * Constructor para crear un nuevo usuario con todos los atributos.
-     *
-     * @param nombreUsuario El nombre de usuario único.
-     * @param contrasena La contraseña del usuario.
-     * @param nombre El nombre completo del usuario.
-     */
-    public Usuario(String nombreUsuario, String contrasena, String nombre) {
-        this.nombreUsuario = nombreUsuario;
-        this.contrasena = contrasena;
-        this.nombre = nombre;
+    public String getNombre() {
+        return nombreUsuario;
+    }
+
+    @Override
+    public String toString() {
+        return nombreUsuario; // Devuelve el nombre de usuario
     }
 
     /**
@@ -73,6 +78,24 @@ public class Usuario {
      */
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
+    }
+
+    /**
+     * Obtiene el rol del usuario.
+     *
+     * @return el rol del usuario.
+     */
+    public Rol getRol() {
+        return rol;
+    }
+
+    /**
+     * Establece el rol del usuario.
+     *
+     * @param rol el rol a establecer.
+     */
+    public void setRol(Rol rol) {
+        this.rol = rol;
     }
 
     /**

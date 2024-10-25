@@ -1,7 +1,9 @@
 package modelo;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.time.format.DateTimeFormatter;
 /**
  * Clase que representa un movimiento en el inventario, el cual puede ser una entrada o una salida.
  * Un movimiento registra información como el tipo de movimiento, el material involucrado, la cantidad,
@@ -30,6 +32,14 @@ public class Movimiento {
     private LocalDateTime fecha;
     private String ubicacion;
 
+    public Movimiento(String tipo, String motivo, Material material, int cantidad, Usuario responsable, LocalDateTime fecha ) {
+        this.tipo = tipo;
+        this.motivo = motivo;
+        this.material = material;
+        this.cantidad = cantidad;
+        this.responsable = responsable;
+        this.fecha = fecha; // Establecer fecha actual al crear un movimiento
+    }
     /**
      * Obtiene el identificador único del movimiento.
      *
@@ -199,5 +209,11 @@ public class Movimiento {
     public void setResponsable(Usuario responsable) {
         this.responsable = responsable;
     }
+
+
+public String getFechaFormateada() {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    return fecha.format(formatter);
+}
 }
 

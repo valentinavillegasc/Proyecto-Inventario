@@ -36,15 +36,16 @@ public class ControladorInventario {
  * @param password La contraseña que se asignará al usuario.
  * @return true si el usuario fue creado exitosamente, false si el nombre de usuario ya existe.
  */
-public boolean crearUsuario(String nombre, String username, String password) {
-    // Implement user creation logic
+public boolean crearUsuario(String nombre, String username, String password, Usuario.Rol rol) {
+    // Verifica si el nombre de usuario ya existe
     if (!usuarios.containsKey(username)) {
-        Usuario nuevoUsuario = new Usuario(nombre, username, password);
-        usuarios.put(username, nuevoUsuario); // Assume `usuarios` is a Map<String, Usuario>
-        return true; // User created successfully
+        Usuario nuevoUsuario = new Usuario(nombre, username, password, rol); // Agregar rol al constructor
+        usuarios.put(username, nuevoUsuario); // Almacenar en el mapa de usuarios
+        return true; // Usuario creado exitosamente
     }
-    return false; // Username already exists
+    return false; // El nombre de usuario ya existe
 }
+
 
     /**
      * Inicia sesión verificando las credenciales del usuario.
@@ -166,6 +167,24 @@ public List<Usuario> obtenerTodosLosUsuarios() {
         return categorias.get(idCategoria);
     }
 
+    /**
+ * Actualiza el nombre de una categoría existente, manteniendo su ID sin cambios.
+ *
+ * @param idCategoria El ID de la categoría a actualizar.
+ * @param nuevoNombre El nuevo nombre para la categoría.
+ * @return true si la categoría fue actualizada correctamente, false si no se encontró.
+ */
+public boolean actualizarCategoria(int idCategoria, String nuevoNombre) {
+    Categoria categoria = categorias.get(idCategoria);
+    if (categoria != null) {
+        categoria.setNombre(nuevoNombre); // Cambia solo el nombre
+        return true;
+    }
+    return false;
+}
+
+
+
     //!MATERIAL
 
     /**
@@ -243,10 +262,11 @@ public List<Usuario> obtenerTodosLosUsuarios() {
     
     //!MOVIMIENTO
 
-    public Movimiento crearMovimiento(String tipo, String motivo, Material material, int cantidad, Usuario responsable, String ubicacion) {
-        Movimiento movimiento = new Movimiento();
-        movimiento.setTipo(tipo);
-    
+    public Movimiento crearMovimiento(String tipo, String motivo, Material material, int cantidad, Usuario responsable, LocalDateTime fecha) {
+        // Crear el movimiento con la fecha proporcionada
+        Movimiento movimiento = new Movimiento(tipo, motivo, material, cantidad, responsable, fecha);
+        
+        // Configuración adicional del movimiento
         try {
             movimiento.setMotivo(motivo);
         } catch (IllegalArgumentException e) {
@@ -257,18 +277,21 @@ public List<Usuario> obtenerTodosLosUsuarios() {
         movimiento.setMaterial(material);
         movimiento.setCantidad(cantidad);
         movimiento.setResponsable(responsable);
-        movimiento.setUbicacion(ubicacion);
-        movimiento.setFecha(LocalDateTime.now());
-    
+        
+        // Agregar movimiento al mapa
+        movimientos.put(movimientos.size() + 1, movimiento); // Asignar ID como el tamaño actual + 1
+        
         // Actualizar el stock del material según el tipo de movimiento
         if (tipo.equalsIgnoreCase("entrada")) {
             material.setStock(material.getStock() + cantidad); // Aumentar stock
         } else if (tipo.equalsIgnoreCase("salida")) {
             material.setStock(material.getStock() - cantidad); // Disminuir stock
         }
-    
+        
         return movimiento;
     }
+    
+    
     
     
     /**
