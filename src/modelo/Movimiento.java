@@ -1,9 +1,10 @@
 package modelo;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
-import java.time.format.DateTimeFormatter;
+
 /**
  * Clase que representa un movimiento en el inventario, el cual puede ser una entrada o una salida.
  * Un movimiento registra información como el tipo de movimiento, el material involucrado, la cantidad,
@@ -23,23 +24,49 @@ public class Movimiento {
     /** Lista de motivos válidos para los movimientos de tipo 'salida'. */
     public static final List<String> MOTIVOS_SALIDA = Arrays.asList("Venta", "Prestamo");
 
+    /** Identificador único del movimiento. */
     private int id;
+    
+    /** Tipo de movimiento (entrada o salida). */
     private String tipo;
+    
+    /** Motivo por el cual se realizó el movimiento. */
     private String motivo;
+    
+    /** Material involucrado en el movimiento. */
     private Material material;
+    
+    /** Cantidad del material involucrado. */
     private int cantidad;
+    
+    /** Usuario responsable del movimiento. */
     private Usuario responsable; 
+    
+    /** Fecha y hora en que se realizó el movimiento. */
     private LocalDateTime fecha;
+    
+    /** Ubicación donde se realizó el movimiento. */
     private String ubicacion;
 
+    /**
+     * Constructor que inicializa un nuevo movimiento con la información proporcionada.
+     * 
+     * @param tipo El tipo de movimiento (entrada o salida).
+     * @param motivo El motivo del movimiento.
+     * @param material El material relacionado con el movimiento.
+     * @param cantidad La cantidad del material involucrado.
+     * @param responsable El usuario responsable del movimiento.
+     * @param fecha La fecha y hora en que se realizó el movimiento.
+     */
     public Movimiento(String tipo, String motivo, Material material, int cantidad, Usuario responsable, LocalDateTime fecha ) {
         this.tipo = tipo;
         this.motivo = motivo;
         this.material = material;
         this.cantidad = cantidad;
         this.responsable = responsable;
-        this.fecha = fecha; // Establecer fecha actual al crear un movimiento
+        this.fecha = fecha; // Establecer fecha al crear un movimiento
     }
+
     /**
      * Obtiene el identificador único del movimiento.
      *
@@ -103,7 +130,7 @@ public class Movimiento {
         return tipo;
     }
 
-     /**
+    /**
      * Establece el tipo de movimiento.
      * El tipo debe ser 'entrada' o 'salida'.
      *
@@ -117,7 +144,7 @@ public class Movimiento {
         this.tipo = tipo;
     }
 
-     /**
+    /**
      * Obtiene el material involucrado en el movimiento.
      *
      * @return el material del movimiento.
@@ -210,10 +237,13 @@ public class Movimiento {
         this.responsable = responsable;
     }
 
-
-public String getFechaFormateada() {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    return fecha.format(formatter);
+    /**
+     * Obtiene la fecha del movimiento formateada como una cadena.
+     * 
+     * @return la fecha del movimiento en formato "dd/MM/yyyy".
+     */
+    public String getFechaFormateada() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return fecha.format(formatter);
+    }
 }
-}
-

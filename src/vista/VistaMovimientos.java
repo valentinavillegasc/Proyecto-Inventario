@@ -15,11 +15,20 @@ import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Clase que representa la vista de los movimientos en el inventario.
+ * Permite visualizar, agregar y eliminar movimientos a través de una interfaz gráfica.
+ */
 public class VistaMovimientos {
     private ControladorInventario controlador;
     private DefaultTableModel model; // Modelo de la tabla
     private JTable table; // Tabla de movimientos
 
+    /**
+     * Constructor de la clase VistaMovimientos.
+     *
+     * @param controlador Controlador que maneja la lógica de negocio de los movimientos.
+     */
     public VistaMovimientos(ControladorInventario controlador) {
         this.controlador = controlador;
         this.model = new DefaultTableModel(new String[]{"ID", "Tipo", "Material", "Cantidad", "Motivo", "Responsable", "Fecha", "Acciones"}, 0);
@@ -27,6 +36,11 @@ public class VistaMovimientos {
         configurarTabla();
     }
 
+    /**
+     * Crea y configura el panel para visualizar los movimientos.
+     *
+     * @return JPanel configurado para mostrar la vista de movimientos.
+     */
     public JPanel createVerMovimientosPanel() {
         JPanel panel = new JPanel(new BorderLayout());
 
@@ -54,6 +68,9 @@ public class VistaMovimientos {
         return panel;
     }
 
+    /**
+     * Configura las propiedades visuales de la tabla de movimientos.
+     */
     private void configurarTabla() {
         table.setRowHeight(30);
         table.getColumnModel().getColumn(1).setPreferredWidth(80);
@@ -69,6 +86,9 @@ public class VistaMovimientos {
         table.getColumn("Acciones").setCellEditor(new AccionRenderer());
     }
 
+    /**
+     * Carga los movimientos desde el controlador y los agrega al modelo de la tabla.
+     */
     private void cargarMovimientos() {
         model.setRowCount(0); // Limpiar filas existentes
         List<Movimiento> movimientos = controlador.obtenerTodosLosMovimientos();
@@ -87,6 +107,9 @@ public class VistaMovimientos {
         System.out.println("Movimientos cargados: " + movimientos.size()); // Para depuración
     }
 
+    /**
+     * Abre un formulario para agregar un nuevo movimiento al inventario.
+     */
     private void abrirFormularioAgregarMovimiento() {
         JFrame frameFormulario = new JFrame("Agregar Movimiento");
         frameFormulario.setSize(400, 250);
@@ -159,6 +182,12 @@ public class VistaMovimientos {
         actualizarMotivos(comboTipo, comboMotivo);
     }
 
+    /**
+     * Actualiza la lista de motivos en función del tipo de movimiento seleccionado.
+     *
+     * @param comboTipo ComboBox del tipo de movimiento.
+     * @param comboMotivo ComboBox donde se mostrarán los motivos.
+     */
     private void actualizarMotivos(JComboBox<String> comboTipo, JComboBox<String> comboMotivo) {
         comboMotivo.removeAllItems();
         String tipoSeleccionado = (String) comboTipo.getSelectedItem();
@@ -174,38 +203,49 @@ public class VistaMovimientos {
         }
     }
 
-    // Renderer y Editor personalizado para mostrar botones en la columna de acciones
+    /**
+     * Clase interna que representa un renderizador y editor personalizado para la columna de acciones en la tabla.
+     * Permite mostrar botones en cada fila para realizar acciones sobre los movimientos.
+     */
     private class AccionRenderer extends AbstractCellEditor implements TableCellRenderer, TableCellEditor {
         private JPanel panel;
         private JButton botonEliminar;
         private int fila;
-    
+
+        /**
+         * Constructor de la clase AccionRenderer.
+         */
         public AccionRenderer() {
             panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
             botonEliminar = new JButton("Eliminar");
-    
+
             botonEliminar.addActionListener(e -> eliminarMovimiento(fila));
-    
+
             panel.add(botonEliminar);
         }
-    
+
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             fila = row;
             return panel;
         }
-    
+
         @Override
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
             fila = row;
             return panel;
         }
-    
+
         @Override
         public Object getCellEditorValue() {
             return null;
         }
-    
+
+        /**
+         * Elimina el movimiento correspondiente a la fila especificada.
+         *
+         * @param fila la fila del movimiento a eliminar.
+         */
         private void eliminarMovimiento(int fila) {
             int idMovimiento = (int) model.getValueAt(fila, 0); // Asegúrate de que esto esté obteniendo el ID correcto
             int confirm = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas eliminar este movimiento?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
@@ -220,7 +260,5 @@ public class VistaMovimientos {
                 }
             }
         }
-        
     }
-    
 }

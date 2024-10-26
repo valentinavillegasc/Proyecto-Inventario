@@ -1,4 +1,5 @@
 package controller;
+
 import modelo.Usuario;
 import modelo.Material;
 import modelo.Movimiento;
@@ -15,39 +16,35 @@ import java.util.Map;
 /**
  * Clase que controla el inventario del sistema, manejando usuarios, materiales, movimientos y categorías.
  */
-
 public class ControladorInventario {
     private Map<String, Usuario> usuarios = new HashMap<>();
     private Map<Integer, Material> materiales = new HashMap<>();
     private Map<Integer, Movimiento> movimientos = new HashMap<>();
     private Map<Integer, Categoria> categorias = new HashMap<>();
     
-
     //!USUARIO
 
     /**
- * Crea un nuevo usuario en el sistema si el nombre de usuario no existe ya.
- *
- * Este método verifica si el nombre de usuario proporcionado ya está registrado en el sistema. 
- * Si no está presente, crea un nuevo objeto de usuario y lo almacena en el mapa de usuarios.
- *
- * @param nombre El nombre completo del usuario que se está registrando.
- * @param username El nombre de usuario único que se utilizará para iniciar sesión.
- * @param password La contraseña que se asignará al usuario.
- * @return true si el usuario fue creado exitosamente, false si el nombre de usuario ya existe.
- */
-public boolean crearUsuario(String nombre, String username, String password, Usuario.Rol rol) {
-    // Verifica si el nombre de usuario ya existe
-    if (!usuarios.containsKey(username)) {
-        // Asegúrate de que los parámetros estén en el orden correcto:
-        Usuario nuevoUsuario = new Usuario(username, password, nombre, rol); // Ajuste en el orden de parámetros
-        usuarios.put(username, nuevoUsuario); // Almacenar en el mapa de usuarios
-        return true; // Usuario creado exitosamente
+     * Crea un nuevo usuario en el sistema si el nombre de usuario no existe ya.
+     *
+     * Este método verifica si el nombre de usuario proporcionado ya está registrado en el sistema. 
+     * Si no está presente, crea un nuevo objeto de usuario y lo almacena en el mapa de usuarios.
+     *
+     * @param nombre El nombre completo del usuario que se está registrando.
+     * @param username El nombre de usuario único que se utilizará para iniciar sesión.
+     * @param password La contraseña que se asignará al usuario.
+     * @param rol El rol del usuario (por ejemplo, ADMIN, USER).
+     * @return true si el usuario fue creado exitosamente, false si el nombre de usuario ya existe.
+     */
+    public boolean crearUsuario(String nombre, String username, String password, Usuario.Rol rol) {
+        // Verifica si el nombre de usuario ya existe
+        if (!usuarios.containsKey(username)) {
+            Usuario nuevoUsuario = new Usuario(username, password, nombre, rol); // Ajuste en el orden de parámetros
+            usuarios.put(username, nuevoUsuario); // Almacenar en el mapa de usuarios
+            return true; // Usuario creado exitosamente
+        }
+        return false; // El nombre de usuario ya existe
     }
-    return false; // El nombre de usuario ya existe
-}
-
-
 
     /**
      * Inicia sesión verificando las credenciales del usuario.
@@ -56,26 +53,13 @@ public boolean crearUsuario(String nombre, String username, String password, Usu
      * @param contrasena La contraseña del usuario.
      * @return true si las credenciales son correctas, false en caso contrario.
      */
-    /* public boolean iniciarSesion(String nombreUsuario, String contrasena) {
-        for (Usuario usuario : usuarios.values()) {
-            if (usuario.iniciarSesion(nombreUsuario, contrasena)) {
-                return true;
-            }
-        }
-        return false;
-    } */
     public boolean iniciarSesion(String nombreUsuario, String contrasena) {
         Usuario usuario = usuarios.get(nombreUsuario);
         if (usuario != null) {
-            System.out.println("Contraseña guardada: '" + usuario.getContrasena() + "'");
-            System.out.println("Contraseña ingresada: '" + contrasena + "'");
             return usuario.getContrasena().equals(contrasena);
         }
         return false;
     }
-    
-    
-    
     
     /**
      * Restablece la contraseña del usuario si coincide el nombre de usuario.
@@ -92,15 +76,15 @@ public boolean crearUsuario(String nombre, String username, String password, Usu
         }
         return false;
     }
-    /**
- * Obtiene todos los usuarios registrados.
- * 
- * @return Una lista de todos los usuarios.
- */
-public List<Usuario> obtenerTodosLosUsuarios() {
-    return new ArrayList<>(usuarios.values());
-}
 
+    /**
+     * Obtiene todos los usuarios registrados.
+     * 
+     * @return Una lista de todos los usuarios.
+     */
+    public List<Usuario> obtenerTodosLosUsuarios() {
+        return new ArrayList<>(usuarios.values());
+    }
 
     //!CATEGORÍA
 
@@ -110,16 +94,16 @@ public List<Usuario> obtenerTodosLosUsuarios() {
      * @param nombre El nombre de la categoría.
      * @return La categoría creada.
      */
-     public Categoria crearCategoria(String nombre) {
+    public Categoria crearCategoria(String nombre) {
         Categoria categoria = new Categoria();
         categoria.setNombre(nombre);
         int id = categorias.size() + 1;
         categoria.setId(id);
         categorias.put(id, categoria);
         return categoria;
-     }
-    
-      /**
+    }
+
+    /**
      * Edita una categoría existente.
      * 
      * @param idCategoria El ID de la categoría.
@@ -134,7 +118,7 @@ public List<Usuario> obtenerTodosLosUsuarios() {
         }
         return false;
     }
-     
+
     /**
      * Obtiene todas las categorías registradas.
      * 
@@ -143,7 +127,7 @@ public List<Usuario> obtenerTodosLosUsuarios() {
     public List<Categoria> obtenerTodasLasCategorias() {
         return new ArrayList<>(categorias.values());
     }
-    
+
     /**
      * Elimina una categoría por su ID.
      * 
@@ -157,7 +141,7 @@ public List<Usuario> obtenerTodosLosUsuarios() {
         }
         return false;
     }
-    
+
     /**
      * Verifica si hay categorías disponibles.
      * 
@@ -166,7 +150,7 @@ public List<Usuario> obtenerTodosLosUsuarios() {
     public boolean hayCategoriasDisponibles() {
         return !categorias.isEmpty();
     }
-    
+
     /**
      * Obtiene una categoría por su ID.
      * 
@@ -178,22 +162,20 @@ public List<Usuario> obtenerTodosLosUsuarios() {
     }
 
     /**
- * Actualiza el nombre de una categoría existente, manteniendo su ID sin cambios.
- *
- * @param idCategoria El ID de la categoría a actualizar.
- * @param nuevoNombre El nuevo nombre para la categoría.
- * @return true si la categoría fue actualizada correctamente, false si no se encontró.
- */
-public boolean actualizarCategoria(int idCategoria, String nuevoNombre) {
-    Categoria categoria = categorias.get(idCategoria);
-    if (categoria != null) {
-        categoria.setNombre(nuevoNombre); // Cambia solo el nombre
-        return true;
+     * Actualiza el nombre de una categoría existente, manteniendo su ID sin cambios.
+     *
+     * @param idCategoria El ID de la categoría a actualizar.
+     * @param nuevoNombre El nuevo nombre para la categoría.
+     * @return true si la categoría fue actualizada correctamente, false si no se encontró.
+     */
+    public boolean actualizarCategoria(int idCategoria, String nuevoNombre) {
+        Categoria categoria = categorias.get(idCategoria);
+        if (categoria != null) {
+            categoria.setNombre(nuevoNombre); // Cambia solo el nombre
+            return true;
+        }
+        return false;
     }
-    return false;
-}
-
-
 
     //!MATERIAL
 
@@ -224,9 +206,9 @@ public boolean actualizarCategoria(int idCategoria, String nuevoNombre) {
      * @return Una lista de todos los materiales.
      */
     public List<Material> obtenerTodosLosMateriales() {
-      return new ArrayList<>(materiales.values());
-  }
-    
+        return new ArrayList<>(materiales.values());
+    }
+
     /**
      * Consulta un material por su ID.
      * 
@@ -236,7 +218,7 @@ public boolean actualizarCategoria(int idCategoria, String nuevoNombre) {
     public Material consultarMaterial(int idMaterial) {
         return materiales.get(idMaterial);
     }
-    
+
     /**
      * Edita un material existente.
      * 
@@ -255,7 +237,7 @@ public boolean actualizarCategoria(int idCategoria, String nuevoNombre) {
         }
         return false;
     }
-    
+
     /**
      * Elimina un material por su ID.
      * 
@@ -269,18 +251,26 @@ public boolean actualizarCategoria(int idCategoria, String nuevoNombre) {
         }
         return false;
     }
-    
+
     //!MOVIMIENTO
 
+    /**
+     * Crea un nuevo movimiento en el inventario.
+     * 
+     * @param tipo El tipo de movimiento ("entrada" o "salida").
+     * @param motivo El motivo del movimiento.
+     * @param material El material relacionado con el movimiento.
+     * @param cantidad La cantidad del material.
+     * @param responsable El usuario responsable del movimiento.
+     * @param fecha La fecha del movimiento.
+     * @return El movimiento creado.
+     */
     public Movimiento crearMovimiento(String tipo, String motivo, Material material, int cantidad, Usuario responsable, LocalDateTime fecha) {
-        // Crear el movimiento con la fecha proporcionada
         Movimiento movimiento = new Movimiento(tipo, motivo, material, cantidad, responsable, fecha);
         
-        // Asignar un ID único
         int id = movimientos.size() + 1; // Asignar ID como el tamaño actual + 1
         movimiento.setId(id); // Asignar ID al movimiento
         
-        // Agregar movimiento al mapa
         movimientos.put(id, movimiento); // Usar el ID como clave en el mapa
         
         // Actualizar el stock del material según el tipo de movimiento
@@ -292,16 +282,12 @@ public boolean actualizarCategoria(int idCategoria, String nuevoNombre) {
         
         return movimiento; // Retornar el movimiento creado
     }
-    
-    
-    
-    
-    
+
     /**
      * Obtiene la lista de motivos válidos según el tipo de movimiento.
      *
-     * @param tipo el tipo de movimiento ("entrada" o "salida").
-     * @return una lista de motivos válidos para el tipo de movimiento.
+     * @param tipo El tipo de movimiento ("entrada" o "salida").
+     * @return Una lista de motivos válidos para el tipo de movimiento.
      */
     public List<String> obtenerMotivosPorTipo(String tipo) {
         if ("entrada".equalsIgnoreCase(tipo)) {
@@ -312,7 +298,6 @@ public boolean actualizarCategoria(int idCategoria, String nuevoNombre) {
         return Collections.emptyList(); 
     }
 
-    
     /**
      * Obtiene todos los movimientos registrados.
      * 
@@ -333,23 +318,16 @@ public boolean actualizarCategoria(int idCategoria, String nuevoNombre) {
     }
 
     /**
- * Elimina un movimiento por su ID.
- * 
- * @param idMovimiento El ID del movimiento a eliminar.
- * @return true si el movimiento fue eliminado, false en caso contrario.
- */
-public boolean eliminarMovimiento(int idMovimiento) {
-    if (movimientos.containsKey(idMovimiento)) {
-        movimientos.remove(idMovimiento); // Elimina el movimiento del mapa
-        return true; // Movimiento eliminado exitosamente
+     * Elimina un movimiento por su ID.
+     * 
+     * @param idMovimiento El ID del movimiento a eliminar.
+     * @return true si el movimiento fue eliminado, false en caso contrario.
+     */
+    public boolean eliminarMovimiento(int idMovimiento) {
+        if (movimientos.containsKey(idMovimiento)) {
+            movimientos.remove(idMovimiento); // Elimina el movimiento del mapa
+            return true; // Movimiento eliminado exitosamente
+        }
+        return false; // El movimiento no existe
     }
-    return false; // El movimiento no existe
 }
-
-
-
-    
-
-
-}
-
