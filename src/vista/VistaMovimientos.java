@@ -12,7 +12,7 @@ import javax.swing.table.TableCellEditor;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDateTime;  // Importa LocalDateTime
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class VistaMovimientos {
@@ -22,14 +22,14 @@ public class VistaMovimientos {
 
     public VistaMovimientos(ControladorInventario controlador) {
         this.controlador = controlador;
-        this.model = new DefaultTableModel(new String[]{"ID", "Tipo", "Material", "Cantidad", "Motivo", "Responsable", "Fecha", "Acciones"}, 0); // Nueva columna de acciones
+        this.model = new DefaultTableModel(new String[]{"ID", "Tipo", "Material", "Cantidad", "Motivo", "Responsable", "Fecha", "Acciones"}, 0);
         this.table = new JTable(model);
         configurarTabla();
     }
 
     public JPanel createVerMovimientosPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-    
+
         JButton botonAgregarMovimiento = new JButton("Agregar Movimiento");
         botonAgregarMovimiento.addActionListener(new ActionListener() {
             @Override
@@ -37,36 +37,33 @@ public class VistaMovimientos {
                 abrirFormularioAgregarMovimiento();
             }
         });
-    
+
         JPanel panelSuperior = new JPanel();
         panelSuperior.add(botonAgregarMovimiento);
         panel.add(panelSuperior, BorderLayout.NORTH);
-    
+
         JScrollPane scrollPane = new JScrollPane(table);
         panel.add(scrollPane, BorderLayout.CENTER);
-    
+
         // Ajuste de tamaño del JFrame o panel principal
-        panel.setPreferredSize(new Dimension(900, 500)); // Cambia el tamaño para que se vea mejor
-    
+        panel.setPreferredSize(new Dimension(900, 500));
+
         cargarMovimientos(); // Cargar los movimientos al inicializar
         configurarTabla(); // Llamar a la configuración de la tabla
-    
+
         return panel;
     }
-    
 
     private void configurarTabla() {
         table.setRowHeight(30);
-        // Ajustar el ancho de la columna de acciones
-        table.getColumnModel().getColumn(1).setPreferredWidth(80);  // Tipo
-        table.getColumnModel().getColumn(2).setPreferredWidth(120); // Material
-        table.getColumnModel().getColumn(3).setPreferredWidth(120);  // Cantidad
-        table.getColumnModel().getColumn(4).setPreferredWidth(120); // Motivo
-        table.getColumnModel().getColumn(5).setPreferredWidth(150); // Responsable
-        table.getColumnModel().getColumn(6).setPreferredWidth(150); // Fecha
-        table.getColumnModel().getColumn(7).setPreferredWidth(200); 
+        table.getColumnModel().getColumn(1).setPreferredWidth(80);
+        table.getColumnModel().getColumn(2).setPreferredWidth(120);
+        table.getColumnModel().getColumn(3).setPreferredWidth(120);
+        table.getColumnModel().getColumn(4).setPreferredWidth(120);
+        table.getColumnModel().getColumn(5).setPreferredWidth(150);
+        table.getColumnModel().getColumn(6).setPreferredWidth(150);
+        table.getColumnModel().getColumn(7).setPreferredWidth(200);
 
-        
         // Configurar renderizador y editor de celdas para botones
         table.getColumn("Acciones").setCellRenderer(new AccionRenderer());
         table.getColumn("Acciones").setCellEditor(new AccionRenderer());
@@ -127,14 +124,14 @@ public class VistaMovimientos {
             String tipo = (String) comboTipo.getSelectedItem();
             Material material = (Material) comboMaterial.getSelectedItem();
             int cantidad;
-            
+
             try {
                 cantidad = Integer.parseInt(campoCantidad.getText());
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(frameFormulario, "Por favor ingresa una cantidad válida.");
                 return;
             }
-            
+
             String motivo = (String) comboMotivo.getSelectedItem();
             Usuario responsable = (Usuario) comboResponsable.getSelectedItem();
             controlador.crearMovimiento(tipo, motivo, material, cantidad, responsable, LocalDateTime.now());
@@ -180,52 +177,50 @@ public class VistaMovimientos {
     // Renderer y Editor personalizado para mostrar botones en la columna de acciones
     private class AccionRenderer extends AbstractCellEditor implements TableCellRenderer, TableCellEditor {
         private JPanel panel;
-        private JButton botonEditar;
         private JButton botonEliminar;
         private int fila;
-
+    
         public AccionRenderer() {
             panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
-            botonEditar = new JButton("Editar");
             botonEliminar = new JButton("Eliminar");
-
-            botonEditar.addActionListener(e -> editarMovimiento(fila));
+    
             botonEliminar.addActionListener(e -> eliminarMovimiento(fila));
-
-            panel.add(botonEditar);
+    
             panel.add(botonEliminar);
         }
-
+    
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             fila = row;
             return panel;
         }
-
+    
         @Override
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
             fila = row;
             return panel;
         }
-
+    
         @Override
         public Object getCellEditorValue() {
             return null;
         }
-
-        private void editarMovimiento(int fila) {
-            int idMovimiento = (int) model.getValueAt(fila, 0);
-            Movimiento movimiento = controlador.consultarMovimiento(idMovimiento);
-            if (movimiento != null) {
-                // Aquí puedes abrir un formulario para editar el movimiento
-            }
-            cargarMovimientos();
-        }
-
+    
         private void eliminarMovimiento(int fila) {
-            int idMovimiento = (int) model.getValueAt(fila, 0);
-            controlador.eliminarMovimiento(idMovimiento);
-            cargarMovimientos(); // Recargar la tabla después de eliminar
+            int idMovimiento = (int) model.getValueAt(fila, 0); // Asegúrate de que esto esté obteniendo el ID correcto
+            int confirm = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas eliminar este movimiento?", "Confirmar Eliminación", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                // Llama al método eliminarMovimiento del controlador
+                boolean exito = controlador.eliminarMovimiento(idMovimiento);
+                if (exito) {
+                    cargarMovimientos(); // Recargar la tabla después de eliminar
+                    JOptionPane.showMessageDialog(null, "Movimiento eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al eliminar el movimiento.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
         }
+        
     }
+    
 }
