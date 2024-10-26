@@ -276,20 +276,12 @@ public boolean actualizarCategoria(int idCategoria, String nuevoNombre) {
         // Crear el movimiento con la fecha proporcionada
         Movimiento movimiento = new Movimiento(tipo, motivo, material, cantidad, responsable, fecha);
         
-        // Configuración adicional del movimiento
-        try {
-            movimiento.setMotivo(motivo);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Error: " + e.getMessage());
-            return null;  
-        }
-    
-        movimiento.setMaterial(material);
-        movimiento.setCantidad(cantidad);
-        movimiento.setResponsable(responsable);
+        // Asignar un ID único
+        int id = movimientos.size() + 1; // Asignar ID como el tamaño actual + 1
+        movimiento.setId(id); // Asignar ID al movimiento
         
         // Agregar movimiento al mapa
-        movimientos.put(movimientos.size() + 1, movimiento); // Asignar ID como el tamaño actual + 1
+        movimientos.put(id, movimiento); // Usar el ID como clave en el mapa
         
         // Actualizar el stock del material según el tipo de movimiento
         if (tipo.equalsIgnoreCase("entrada")) {
@@ -298,8 +290,9 @@ public boolean actualizarCategoria(int idCategoria, String nuevoNombre) {
             material.setStock(material.getStock() - cantidad); // Disminuir stock
         }
         
-        return movimiento;
+        return movimiento; // Retornar el movimiento creado
     }
+    
     
     
     
@@ -338,6 +331,24 @@ public boolean actualizarCategoria(int idCategoria, String nuevoNombre) {
     public Movimiento consultarMovimiento(int idMovimiento) {
         return movimientos.get(idMovimiento);
     }
+
+    /**
+ * Elimina un movimiento por su ID.
+ * 
+ * @param idMovimiento El ID del movimiento a eliminar.
+ * @return true si el movimiento fue eliminado, false en caso contrario.
+ */
+public boolean eliminarMovimiento(int idMovimiento) {
+    if (movimientos.containsKey(idMovimiento)) {
+        movimientos.remove(idMovimiento); // Elimina el movimiento del mapa
+        return true; // Movimiento eliminado exitosamente
+    }
+    return false; // El movimiento no existe
+}
+
+
+
+    
 
 
 }
