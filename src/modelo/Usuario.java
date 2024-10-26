@@ -19,14 +19,6 @@ public class Usuario {
     private String nombre;  // Nombre completo del usuario
 
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     /**
      * Constructor que permite establecer el rol del usuario.
      *

@@ -12,15 +12,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+/**
+ * Clase que representa la vista para la gestión de materiales en el inventario.
+ * Permite agregar, editar y eliminar materiales a través de una interfaz gráfica.
+ */
 public class VistaMateriales {
-    private ControladorInventario controlador;
-    private DefaultTableModel materialTableModel;
-    private JTable table;
+    private ControladorInventario controlador; // Controlador para manejar la lógica de negocio
+    private DefaultTableModel materialTableModel; // Modelo de la tabla para mostrar materiales
+    private JTable table; // Tabla para visualizar los materiales
 
+    /**
+     * Constructor de la clase VistaMateriales.
+     *
+     * @param controlador Controlador que maneja las operaciones sobre materiales.
+     */
     public VistaMateriales(ControladorInventario controlador) {
         this.controlador = controlador;
     }
 
+    /**
+     * Abre un formulario para agregar un nuevo material.
+     */
     private void abrirFormularioAgregarMaterial() {
         JFrame frameFormulario = new JFrame("Agregar Material");
         frameFormulario.setSize(400, 300);
@@ -90,6 +102,12 @@ public class VistaMateriales {
         frameFormulario.setVisible(true);
     }
 
+    /**
+     * Abre un formulario para editar un material existente.
+     *
+     * @param idMaterial ID del material a editar.
+     * @param material Objeto Material que contiene la información actual del material.
+     */
     private void abrirFormularioEditarMaterial(int idMaterial, Material material) {
         JFrame frameFormulario = new JFrame("Editar Material");
         frameFormulario.setSize(400, 300);
@@ -156,8 +174,6 @@ public class VistaMateriales {
                 JOptionPane.showMessageDialog(frameFormulario, "Todos los campos son obligatorios.");
             }
         });
-        
-       
 
         panelFormulario.add(labelNombre);
         panelFormulario.add(campoNombre);
@@ -174,8 +190,11 @@ public class VistaMateriales {
         frameFormulario.setVisible(true);
     }
 
+    /**
+     * Actualiza la tabla de materiales con los datos más recientes del controlador.
+     */
     private void actualizarTablaMateriales() {
-        materialTableModel.setRowCount(0);
+        materialTableModel.setRowCount(0); // Limpiar la tabla existente
         List<Material> materiales = controlador.obtenerTodosLosMateriales();
         for (Material material : materiales) {
             materialTableModel.addRow(new Object[]{
@@ -188,6 +207,11 @@ public class VistaMateriales {
         }
     }
 
+    /**
+     * Crea el panel para visualizar los materiales.
+     *
+     * @return JPanel configurado para mostrar la vista de materiales.
+     */
     public JPanel createVerMaterialesPanel() {
         JPanel panel = new JPanel(new BorderLayout());
         JButton botonAgregar = new JButton("Agregar");
@@ -211,12 +235,16 @@ public class VistaMateriales {
         table.getColumn("Acciones").setCellEditor(new AccionesEditor(new JCheckBox()));
         table.getColumnModel().getColumn(5).setPreferredWidth(150); // Ajustar ancho de columna "Acciones"
 
-        actualizarTablaMateriales();
+        actualizarTablaMateriales(); // Cargar los materiales en la tabla
         JScrollPane scrollPane = new JScrollPane(table);
         panel.add(scrollPane, BorderLayout.CENTER);
         return panel;
     }
 
+    /**
+     * Clase interna que representa el renderizador de la columna de acciones en la tabla de materiales.
+     * Permite mostrar botones para editar y eliminar materiales en cada fila.
+     */
     private class AccionesRenderer extends JPanel implements TableCellRenderer {
         public AccionesRenderer() {
             setOpaque(true);
@@ -235,6 +263,10 @@ public class VistaMateriales {
         }
     }
 
+    /**
+     * Clase interna que representa el editor de la columna de acciones en la tabla de materiales.
+     * Permite manejar los eventos de los botones de editar y eliminar.
+     */
     private class AccionesEditor extends DefaultCellEditor {
         private JPanel panel;
         private JButton botonEditar;
@@ -271,7 +303,6 @@ public class VistaMateriales {
                     }
                 }
             });
-            
 
             panel.add(botonEditar);
             panel.add(botonEliminar);
