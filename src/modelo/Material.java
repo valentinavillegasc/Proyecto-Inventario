@@ -11,14 +11,14 @@ public class Material {
     private Categoria categoria; 
     private String proveedor;
     private String ubicacion;
-    private int entradas;
-    private int salidas;
-    private int stock;
+    private int entradas;  // Total de entradas de material
+    private int salidas;   // Total de salidas de material
+    private int stock;     // Stock actual disponible
 
-    
     public String toString() {
         return nombre; // Devuelve el nombre del material
     }
+
     /**
      * Obtiene el código del material.
      * 
@@ -36,7 +36,8 @@ public class Material {
     public void setCodigo(int cod) {
         this.cod = cod;
     }
-     /**
+
+    /**
      * Obtiene el nombre del material.
      * 
      * @return El nombre del material.
@@ -161,5 +162,35 @@ public class Material {
     public void setStock(int stock) {
         this.stock = stock;
     }
-}
 
+    /**
+     * Realiza una entrada de stock del material.
+     * 
+     * @param cantidad La cantidad que se quiere ingresar.
+     * @throws IllegalArgumentException Si la cantidad es negativa o cero.
+     */
+    public void entradaStock(int cantidad) {
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad a ingresar debe ser mayor a cero.");
+        }
+        this.stock += cantidad;  // Incrementa el stock
+        this.entradas += cantidad;  // Actualiza el número de entradas
+    }
+
+    /**
+     * Realiza una salida de stock del material.
+     * 
+     * @param cantidad La cantidad que se quiere retirar.
+     * @throws IllegalArgumentException Si la cantidad es negativa o cero, o si no hay suficiente stock.
+     */
+    public void salidaStock(int cantidad) {
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad a retirar debe ser mayor a cero.");
+        }
+        if (cantidad > stock) {
+            throw new IllegalArgumentException("No hay suficiente stock para realizar la salida.");
+        }
+        this.stock -= cantidad;  // Decrementa el stock
+        this.salidas += cantidad;  // Actualiza el número de salidas
+    }
+}
