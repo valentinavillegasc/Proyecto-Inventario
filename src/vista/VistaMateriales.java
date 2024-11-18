@@ -213,7 +213,98 @@ configurarTabla();
             return this;
         }
     }
+    /**
+     * Abre un formulario para editar un material existente.
+     *
+     * @param idMaterial ID del material a editar.
+     * @param material Objeto Material que contiene la información actual del material.
+     */
+    private void abrirFormularioEditarMaterial(int idMaterial, Material material) {
+        JFrame frameFormulario = new JFrame("Editar Material");
+        frameFormulario.setSize(400, 300);
+        frameFormulario.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frameFormulario.setLocationRelativeTo(null);
 
+        JPanel panelFormulario = new JPanel(new GridLayout(5, 2));
+
+        JLabel labelNombre = new JLabel("Nombre del Material:");
+        JTextField campoNombre = new JTextField(material.getNombre());
+
+        JLabel labelProveedor = new JLabel("Proveedor:");
+        JTextField campoProveedor = new JTextField(material.getProveedor());
+
+        JLabel labelUbicacion = new JLabel("Ubicación:");
+        JTextField campoUbicacion = new JTextField(material.getUbicacion());
+
+        JLabel labelCategoria = new JLabel("Categoría:");
+        JComboBox<Categoria> comboCategoria = new JComboBox<>();
+        List<Categoria> categorias = controlador.obtenerTodasLasCategorias();
+        for (Categoria categoria : categorias) {
+            comboCategoria.addItem(categoria);
+        }
+
+        comboCategoria.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof Categoria) {
+                    Categoria categoria = (Categoria) value;
+                    setText(categoria.getNombre()); // Mostrar solo el nombre de la categoría
+                }
+                return c;
+            }
+        });
+        comboCategoria.setSelectedItem(material.getCategoria());
+
+        JButton botonGuardar = new JButton("Guardar");
+        botonGuardar.addActionListener(e -> {
+            String nuevoNombre = campoNombre.getText();
+            String nuevoProveedor = campoProveedor.getText();
+            String nuevaUbicacion = campoUbicacion.getText();
+            Categoria nuevaCategoria = (Categoria) comboCategoria.getSelectedItem();
+        
+            if (!nuevoNombre.isEmpty() && nuevaCategoria != null) {
+                Material nuevoMaterial = new Material();
+                nuevoMaterial.setNombre(nuevoNombre);
+                nuevoMaterial.setProveedor(nuevoProveedor);
+                nuevoMaterial.setUbicacion(nuevaUbicacion);
+                nuevoMaterial.setCategoria(nuevaCategoria);
+        
+                // Llama al controlador para editar el material
+                controlador.editarMaterial(idMaterial, nuevoMaterial);
+                
+                // Actualiza la tabla para reflejar los cambios
+                actualizarTablaMateriales();
+                
+                // Muestra un mensaje de éxito
+                JOptionPane.showMessageDialog(frameFormulario, "Material actualizado con éxito.");
+                
+                // Cierra el formulario
+                frameFormulario.dispose();
+            } else {
+                JOptionPane.showMessageDialog(frameFormulario, "Todos los campos son obligatorios.");
+            }
+        });
+
+        panelFormulario.add(labelNombre);
+        panelFormulario.add(campoNombre);
+        panelFormulario.add(labelProveedor);
+        panelFormulario.add(campoProveedor);
+        panelFormulario.add(labelUbicacion);
+        panelFormulario.add(campoUbicacion);
+        panelFormulario.add(labelCategoria);
+        panelFormulario.add(comboCategoria);
+        panelFormulario.add(new JLabel());
+        panelFormulario.add(botonGuardar);
+
+        frameFormulario.add(panelFormulario);
+        frameFormulario.setVisible(true);
+    }
+
+    /**
+     * Clase interna que representa el editor de la columna de acciones en la tabla de materiales.
+     * Permite manejar los eventos de los botones de editar y eliminar.
+     */
     /**
      * Clase interna que representa el editor de la columna de acciones en la tabla de materiales.
      * Permite manejar los eventos de los botones de editar y eliminar.
@@ -228,24 +319,35 @@ configurarTabla();
             panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
             botonEditar = new JButton("Editar");
             botonEliminar = new JButton("Eliminar");
+            botonEditar.setPreferredSize(new Dimension(70, 25));
+            botonEliminar.setPreferredSize(new Dimension(70, 25));
+
+            botonEditar.addActionListener(e -> {
+                int idMaterial = (int) materialTableModel.getValueAt(table.getSelectedRow(), 0);
+                Material material = controlador.consultarMaterial(idMaterial);
+                abrirFormularioEditarMaterial(idMaterial, material);
+            });
+
+            botonEliminar.addActionListener(e -> {
+                int filaSeleccionada = table.getSelectedRow();
+                if (filaSeleccionada != -1) {
+                    int idMaterial = (int) materialTableModel.getValueAt(filaSeleccionada, 0);
+            
+                    int respuesta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas eliminar este material?", "Confirmación", JOptionPane.YES_NO_OPTION);
+                    if (respuesta == JOptionPane.YES_OPTION) {
+                        // Detener la edición antes de realizar la eliminación
+                        if (table.isEditing()) {
+                            table.getCellEditor().stopCellEditing();
+                        }
+            
+                        controlador.eliminarMaterial(idMaterial);
+                        actualizarTablaMateriales();
+                    }
+                }
+            });
+
             panel.add(botonEditar);
             panel.add(botonEliminar);
-
-            botonEditar.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    // Lógica de edición
-                    JOptionPane.showMessageDialog(panel, "Editar material");
-                }
-            });
-
-            botonEliminar.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    // Lógica de eliminación
-                    JOptionPane.showMessageDialog(panel, "Eliminar material");
-                }
-            });
         }
 
         @Override
