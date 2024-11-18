@@ -85,6 +85,31 @@ public class ControladorInventario {
     public List<Usuario> obtenerTodosLosUsuarios() {
         return new ArrayList<>(usuarios.values());
     }
+    // Método para obtener el material por su ID
+    public Material getMaterialPorId(int idMaterial) {
+        return materiales.get(idMaterial);
+    }
+
+    // Método para guardar el material en el mapa
+    public void guardarMaterial(Material material) {
+        materiales.put(material.getCodigo(), material);
+    }
+
+    // Método para actualizar el stock de un material, basado en entradas o salidas
+    public void actualizarStockMaterial(int idMaterial, int cantidad, boolean esEntrada) {
+        Material material = getMaterialPorId(idMaterial);
+        if (material != null) {
+            if (esEntrada) {
+                material.entradaStock(cantidad);  // Si es una entrada, incrementamos el stock
+            } else {
+                material.salidaStock(cantidad);  // Si es una salida, decrementamos el stock
+            }
+            guardarMaterial(material);  // Guardamos el material actualizado
+        } else {
+            System.out.println("Material no encontrado con el ID: " + idMaterial);
+        }
+    }
+
 
     //!CATEGORÍA
 
@@ -266,6 +291,7 @@ public class ControladorInventario {
      * @return El movimiento creado.
      */
     public Movimiento crearMovimiento(String tipo, String motivo, Material material, int cantidad, Usuario responsable, LocalDateTime fecha) {
+        // Creación del movimiento, la validación de tipo y motivo se realiza en el constructor de Movimiento
         Movimiento movimiento = new Movimiento(tipo, motivo, material, cantidad, responsable, fecha);
         
         int id = movimientos.size() + 1; // Asignar ID como el tamaño actual + 1
@@ -274,9 +300,9 @@ public class ControladorInventario {
         movimientos.put(id, movimiento); // Usar el ID como clave en el mapa
         
         // Actualizar el stock del material según el tipo de movimiento
-        if (tipo.equalsIgnoreCase("entrada")) {
+        if (tipo.equalsIgnoreCase(Movimiento.TIPO_ENTRADA)) {
             material.setStock(material.getStock() + cantidad); // Aumentar stock
-        } else if (tipo.equalsIgnoreCase("salida")) {
+        } else if (tipo.equalsIgnoreCase(Movimiento.TIPO_SALIDA)) {
             material.setStock(material.getStock() - cantidad); // Disminuir stock
         }
         
@@ -284,16 +310,31 @@ public class ControladorInventario {
     }
 
     /**
-     * Obtiene la lista de motivos válidos según el tipo de movimiento.
+     * Elimina un movimiento de la lista de movimientos.
      *
+     * @param idMovimiento El ID del movimiento a eliminar.
+     * @return true si el movimiento se eliminó con éxito, false si no se encontró.
+     */
+    public boolean eliminarMovimiento(int idMovimiento) {
+        // Verificar si el movimiento existe en el Map
+        if (movimientos.containsKey(idMovimiento)) {
+            movimientos.remove(idMovimiento); // Eliminar el movimiento usando el ID
+            return true; // El movimiento se eliminó con éxito
+        }
+        return false; // Si no se encuentra el movimiento, retornar false
+    }
+
+    /**
+     * Obtiene los motivos disponibles para un tipo de movimiento.
+     * 
      * @param tipo El tipo de movimiento ("entrada" o "salida").
-     * @return Una lista de motivos válidos para el tipo de movimiento.
+     * @return Una lista de motivos válidos para ese tipo de movimiento.
      */
     public List<String> obtenerMotivosPorTipo(String tipo) {
-        if ("entrada".equalsIgnoreCase(tipo)) {
-            return Arrays.asList("ajuste entrada", "ingreso", "devolución");
-        } else if ("salida".equalsIgnoreCase(tipo)) {
-            return Arrays.asList("venta", "préstamo");
+        if (Movimiento.TIPO_ENTRADA.equalsIgnoreCase(tipo)) {
+            return Movimiento.MOTIVOS_ENTRADA;
+        } else if (Movimiento.TIPO_SALIDA.equalsIgnoreCase(tipo)) {
+            return Movimiento.MOTIVOS_SALIDA;
         }
         return Collections.emptyList(); 
     }
@@ -307,27 +348,16 @@ public class ControladorInventario {
         return new ArrayList<>(movimientos.values());
     }
 
-    /**
-     * Consulta un movimiento por su ID.
-     * 
-     * @param idMovimiento El ID del movimiento.
-     * @return El movimiento encontrado o null si no existe.
-     */
-    public Movimiento consultarMovimiento(int idMovimiento) {
-        return movimientos.get(idMovimiento);
-    }
-
-    /**
-     * Elimina un movimiento por su ID.
-     * 
-     * @param idMovimiento El ID del movimiento a eliminar.
-     * @return true si el movimiento fue eliminado, false en caso contrario.
-     */
-    public boolean eliminarMovimiento(int idMovimiento) {
-        if (movimientos.containsKey(idMovimiento)) {
-            movimientos.remove(idMovimiento); // Elimina el movimiento del mapa
-            return true; // Movimiento eliminado exitosamente
+    public void actualizarStockMaterial(int idMaterial, int nuevoStock) {
+        // Aquí debes actualizar el stock del material con el id dado.
+        // Esto puede involucrar interactuar con tu base de datos o tu modelo de datos.
+        
+        Material material = getMaterialPorId(idMaterial); // Obtener el material por su ID
+        if (material != null) {
+            material.setStock(nuevoStock); // Actualizar el stock
+            // Si tienes base de datos, aquí actualizarías el stock en la base de datos
+            guardarMaterial(material); // Guardar el material actualizado en la base de datos
         }
-        return false; // El movimiento no existe
     }
+    
 }
