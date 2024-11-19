@@ -291,23 +291,22 @@ public class ControladorInventario {
      * @return El movimiento creado.
      */
     public Movimiento crearMovimiento(String tipo, String motivo, Material material, int cantidad, Usuario responsable, LocalDateTime fecha) {
-        // Creación del movimiento, la validación de tipo y motivo se realiza en el constructor de Movimiento
+        System.out.println("Before movement creation, stock: " + material.getStock());
+    
+        // Create the movement
         Movimiento movimiento = new Movimiento(tipo, motivo, material, cantidad, responsable, fecha);
-        
-        int id = movimientos.size() + 1; // Asignar ID como el tamaño actual + 1
-        movimiento.setId(id); // Asignar ID al movimiento
-        
-        movimientos.put(id, movimiento); // Usar el ID como clave en el mapa
-        
-        // Actualizar el stock del material según el tipo de movimiento
-        if (tipo.equalsIgnoreCase(Movimiento.TIPO_ENTRADA)) {
-            material.setStock(material.getStock() + cantidad); // Aumentar stock
-        } else if (tipo.equalsIgnoreCase(Movimiento.TIPO_SALIDA)) {
-            material.setStock(material.getStock() - cantidad); // Disminuir stock
-        }
-        
-        return movimiento; // Retornar el movimiento creado
+    
+        int id = movimientos.size() + 1; 
+        movimiento.setId(id); 
+        movimientos.put(id, movimiento);
+    
+        // Log final stock
+        System.out.println("After movement creation, stock: " + material.getStock());
+    
+        return movimiento;
     }
+    
+    
 
     /**
      * Elimina un movimiento de la lista de movimientos.

@@ -64,10 +64,19 @@ public class Movimiento {
         this.material = material;
         this.cantidad = cantidad;
         this.responsable = responsable;
-        this.fecha = fecha; // Establecer fecha al crear un movimiento
-        // Actualizar el stock del material dependiendo del tipo de movimiento
+        this.fecha = fecha;
+    
+        // Add debug log
+        System.out.println("Creating movement: " + tipo + ", quantity: " + cantidad);
+        System.out.println("Stock before update: " + material.getStock());
+    
+        // Update stock
         actualizarStock();
+    
+        // Log after update
+        System.out.println("Stock after update: " + material.getStock());
     }
+    
 
     /**
      * Método privado para actualizar el stock del material según el tipo de movimiento.
