@@ -166,10 +166,18 @@ public class VistaMateriales {
      */
     public JPanel createVerMaterialesPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        JButton botonAgregar = new JButton("Agregar");
-        botonAgregar.addActionListener(e -> abrirFormularioAgregarMaterial());
 
-        JPanel panelSuperior = new JPanel();
+        // Panel superior con el texto "Materiales" y el botón "Agregar"
+    JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Alineación a la izquierda
+    JLabel labelMateriales = new JLabel("Materiales"); // Texto "Materiales"
+    labelMateriales.setFont(new Font(labelMateriales.getFont().getName(), Font.BOLD, 20));
+    labelMateriales.setForeground(Color.decode("#20134d"));
+
+    JButton botonAgregar = new JButton("Agregar");
+    botonAgregar.addActionListener(e -> abrirFormularioAgregarMaterial()); // Acción del botón "Agregar"
+
+    panelSuperior.add(labelMateriales); // Añade el texto al panel superior
+    panelSuperior.add(Box.createHorizontalStrut(500)); 
         panelSuperior.add(botonAgregar);
         panel.add(panelSuperior, BorderLayout.NORTH);
 
