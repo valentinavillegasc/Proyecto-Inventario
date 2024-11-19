@@ -39,11 +39,18 @@ public class VistaLogin extends JFrame {
         setLayout(new BorderLayout());  // Establece el layout del JFrame
 
         JPanel panelFormulario = new JPanel(new GridBagLayout());  // Panel para el formulario
+        panelFormulario.setBackground(Color.decode("#095393")); // Establece el color de fondo personalizado
+
         GridBagConstraints gbc = new GridBagConstraints();  // Configuración de restricciones para el layout
         gbc.fill = GridBagConstraints.HORIZONTAL;  // Permite que el componente ocupe todo el ancho disponible
         gbc.insets = new Insets(5, 5, 5, 5);  // Espaciado entre componentes
 
+        // Configuración de fuente para etiquetas
+        Font fuenteEtiqueta = new Font("Arial", Font.BOLD, 12);
+
         JLabel etiquetaUsuario = new JLabel("Usuario:");  // Etiqueta para el campo de usuario
+        etiquetaUsuario.setForeground(Color.WHITE);  // Cambia el color a blanco
+        etiquetaUsuario.setFont(fuenteEtiqueta);  // Cambia la fuente a negrita
         campoUsuario = new JTextField(10);  // Campo de texto para ingresar el nombre de usuario
         gbc.gridx = 0;  // Posición en el grid
         gbc.gridy = 0;
@@ -52,6 +59,8 @@ public class VistaLogin extends JFrame {
         panelFormulario.add(campoUsuario, gbc);  // Añade el campo de texto al panel
 
         JLabel etiquetaContrasena = new JLabel("Contraseña:");  // Etiqueta para el campo de contraseña
+        etiquetaContrasena.setForeground(Color.WHITE);  // Cambia el color a blanco
+        etiquetaContrasena.setFont(fuenteEtiqueta);  // Cambia la fuente a negrita
         campoContrasena = new JPasswordField(10);  // Campo de texto para ingresar la contraseña
         gbc.gridx = 0;
         gbc.gridy = 1;

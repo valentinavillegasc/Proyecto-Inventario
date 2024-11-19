@@ -31,30 +31,39 @@ public class VistaMovimientos {
 
     public JPanel createVerMovimientosPanel() {
         JPanel panel = new JPanel(new BorderLayout());
+    
+        // Panel superior con el texto "Movimientos" y el botón "Agregar Movimiento"
+        JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Alineación a la izquierda
+        JLabel labelMovimientos = new JLabel("Movimientos"); // Texto "Movimientos"
+        labelMovimientos.setFont(new Font(labelMovimientos.getFont().getName(), Font.BOLD, 20));
+        labelMovimientos.setForeground(Color.decode("#20134d")); // Cambiar el color del texto al color hexadecimal
 
-        JButton botonAgregarMovimiento = new JButton("Agregar Movimiento");
+
+        JButton botonAgregarMovimiento = new JButton("Agregar");
         botonAgregarMovimiento.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 abrirFormularioAgregarMovimiento();
             }
         });
-
-        JPanel panelSuperior = new JPanel();
-        panelSuperior.add(botonAgregarMovimiento);
-        panel.add(panelSuperior, BorderLayout.NORTH);
-
+    
+        panelSuperior.add(labelMovimientos); // Añade el texto al panel superior
+        panelSuperior.add(Box.createHorizontalStrut(500)); // Espaciador horizontal entre el texto y el botón
+        panelSuperior.add(botonAgregarMovimiento); // Añade el botón al panel superior
+        panel.add(panelSuperior, BorderLayout.NORTH); // Añade el panel superior al layout principal
+    
         JScrollPane scrollPane = new JScrollPane(table);
-        panel.add(scrollPane, BorderLayout.CENTER);
-
+        panel.add(scrollPane, BorderLayout.CENTER); // Añade el scroll con la tabla al panel principal
+    
         // Ajuste de tamaño del JFrame o panel principal
         panel.setPreferredSize(new Dimension(900, 500));
-
+    
         cargarMovimientos(); // Cargar los movimientos al inicializar
         configurarTabla(); // Llamar a la configuración de la tabla
-
+    
         return panel;
     }
+    
 
     private void configurarTabla() {
         table.setRowHeight(30);

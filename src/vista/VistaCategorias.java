@@ -129,12 +129,19 @@ public class VistaCategorias {
      */
     public JPanel createVerCategoriasPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        JButton botonAgregar = new JButton("Agregar");
-        botonAgregar.addActionListener(e -> abrirFormularioAgregarCategoria()); // Acción del botón "Agregar"
 
-        JPanel panelSuperior = new JPanel();
-        panelSuperior.add(botonAgregar);
-        panel.add(panelSuperior, BorderLayout.NORTH);
+        // Panel superior con el texto "Categorías" y el botón "Agregar"
+    JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Alineación a la izquierda
+    JLabel labelCategorias = new JLabel("Categorías"); // Texto "Categorías"
+    labelCategorias.setFont(new Font(labelCategorias.getFont().getName(), Font.BOLD, 20));
+    labelCategorias.setForeground(Color.decode("#20134d"));
+    JButton botonAgregar = new JButton("Agregar");
+    botonAgregar.addActionListener(e -> abrirFormularioAgregarCategoria()); // Acción del botón "Agregar"
+
+    panelSuperior.add(labelCategorias); // Añade el texto al panel superior
+    panelSuperior.add(Box.createHorizontalStrut(500)); // Espaciador horizontal entre el texto y el botón
+    panelSuperior.add(botonAgregar); // Añade el botón al panel superior
+    panel.add(panelSuperior, BorderLayout.NORTH); // Añade el panel superior al layout principal
 
         String[] columnNames = {"ID", "Nombre", "Acciones"};
         categoriaTableModel = new DefaultTableModel(columnNames, 0) {

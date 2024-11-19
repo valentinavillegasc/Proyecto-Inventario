@@ -26,18 +26,25 @@ public class VistaRecuperarContrasena extends JFrame {
         this.controlador = controlador;  // Inicializa el controlador
 
         setTitle("Recuperar Contraseña");  // Establece el título de la ventana
-        setSize(300, 180);  // Establece el tamaño de la ventana
+        setSize(300, 250);  // Establece el tamaño de la ventana
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  // Cierra la ventana al finalizárla
         setLocationRelativeTo(null);  // Centra la ventana en la pantalla
         setLayout(new BorderLayout());  // Establece el layout principal de la ventana
 
         JPanel panelFormulario = new JPanel(new GridBagLayout());  // Panel para el formulario con GridBagLayout
+        panelFormulario.setBackground(Color.decode("#095393")); // Establece el color de fondo personalizado
+
         GridBagConstraints gbc = new GridBagConstraints();  // Configura las restricciones del GridBagLayout
         gbc.fill = GridBagConstraints.HORIZONTAL;  // Permite que los componentes ocupen el ancho completo
         gbc.insets = new Insets(5, 5, 5, 5);  // Espaciado entre los componentes
 
+        // Configuración de fuente para etiquetas
+        Font fuenteEtiqueta = new Font("Arial", Font.BOLD, 12);
+
         // Etiqueta y campo de usuario
         JLabel etiquetaUsuario = new JLabel("Usuario:");  // Etiqueta para el campo de usuario
+        etiquetaUsuario.setForeground(Color.WHITE);  // Cambia el color de la etiqueta a blanco
+        etiquetaUsuario.setFont(fuenteEtiqueta);  // Cambia la fuente a negrita
         campoUsuario = new JTextField(10);  // Campo de texto para ingresar el nombre de usuario
         gbc.gridx = 0;  // Posición en la cuadrícula
         gbc.gridy = 0;  
@@ -47,6 +54,8 @@ public class VistaRecuperarContrasena extends JFrame {
 
         // Etiqueta y campo de nueva contraseña
         JLabel etiquetaNuevaContrasena = new JLabel("Nueva Contraseña:");  // Etiqueta para el campo de nueva contraseña
+        etiquetaNuevaContrasena.setForeground(Color.WHITE);  // Cambia el color de la etiqueta a blanco
+        etiquetaNuevaContrasena.setFont(fuenteEtiqueta);  // Cambia la fuente a negrita
         campoNuevaContrasena = new JPasswordField(10);  // Campo de texto para ingresar la nueva contraseña
         gbc.gridx = 0;  
         gbc.gridy = 1;  
