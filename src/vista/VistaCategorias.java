@@ -16,9 +16,9 @@ import java.util.List;
  * Proporciona una interfaz gráfica para agregar, editar y eliminar categorías.
  */
 public class VistaCategorias {
-    private ControladorInventario controlador; // Controlador para manejar la lógica de negocio
-    private DefaultTableModel categoriaTableModel; // Modelo de tabla para mostrar las categorías
-    private JTable table; // Tabla para visualizar las categorías
+    private ControladorInventario controlador; 
+    private DefaultTableModel categoriaTableModel; 
+    private JTable table; 
 
     /**
      * Constructor que inicializa la vista de categorías.
@@ -26,7 +26,7 @@ public class VistaCategorias {
      * @param controlador El controlador del inventario que maneja la lógica de negocio.
      */
     public VistaCategorias(ControladorInventario controlador) {
-        this.controlador = controlador; // Inicializa el controlador
+        this.controlador = controlador; 
     }
 
     /**
@@ -42,29 +42,29 @@ public class VistaCategorias {
         JPanel panelFormulario = new JPanel(new GridLayout(3, 2));
 
         JLabel labelNombre = new JLabel("Nombre de la Categoría:");
-        JTextField campoNombre = new JTextField(15); // Campo de texto para el nombre de la categoría
+        JTextField campoNombre = new JTextField(15); 
 
         JButton botonGuardar = new JButton("Guardar");
         botonGuardar.addActionListener(e -> {
             String nombreCategoria = campoNombre.getText();
             if (!nombreCategoria.isEmpty()) {
-                controlador.crearCategoria(nombreCategoria); // Llama al controlador para crear la categoría
-                actualizarTablaCategorias(); // Actualiza la tabla para reflejar los cambios
+                controlador.crearCategoria(nombreCategoria); 
+                actualizarTablaCategorias(); 
                 JOptionPane.showMessageDialog(frameFormulario, "Categoría creada con éxito.");
-                frameFormulario.dispose(); // Cierra el formulario
+                frameFormulario.dispose(); 
             } else {
-                JOptionPane.showMessageDialog(frameFormulario, "El nombre no puede estar vacío."); // Mensaje de error
+                JOptionPane.showMessageDialog(frameFormulario, "El nombre no puede estar vacío."); 
             }
         });
 
-        // Añade los componentes al panel del formulario
+       
         panelFormulario.add(labelNombre);
         panelFormulario.add(campoNombre);
         panelFormulario.add(new JLabel());
         panelFormulario.add(botonGuardar);
 
         frameFormulario.add(panelFormulario);
-        frameFormulario.setVisible(true); // Muestra el formulario
+        frameFormulario.setVisible(true); 
     }
 
     /**
@@ -83,29 +83,29 @@ public class VistaCategorias {
         JPanel panelFormulario = new JPanel(new GridLayout(3, 2));
 
         JLabel labelNombre = new JLabel("Nombre de la Categoría:");
-        JTextField campoNombre = new JTextField(nombreActual, 15); // Campo de texto prellenado con el nombre actual
+        JTextField campoNombre = new JTextField(nombreActual, 15); 
 
         JButton botonGuardar = new JButton("Guardar");
         botonGuardar.addActionListener(e -> {
             String nuevoNombre = campoNombre.getText();
             if (!nuevoNombre.isEmpty()) {
-                controlador.actualizarCategoria(idCategoria, nuevoNombre); // Actualiza la categoría a través del controlador
-                actualizarTablaCategorias(); // Actualiza la tabla para reflejar los cambios
+                controlador.actualizarCategoria(idCategoria, nuevoNombre); 
+                actualizarTablaCategorias();  
                 JOptionPane.showMessageDialog(frameFormulario, "Categoría actualizada con éxito.");
-                frameFormulario.dispose(); // Cierra el formulario
+                frameFormulario.dispose(); 
             } else {
-                JOptionPane.showMessageDialog(frameFormulario, "El nombre no puede estar vacío."); // Mensaje de error
+                JOptionPane.showMessageDialog(frameFormulario, "El nombre no puede estar vacío.");  
             }
         });
 
-        // Añade los componentes al panel del formulario
+         
         panelFormulario.add(labelNombre);
         panelFormulario.add(campoNombre);
         panelFormulario.add(new JLabel());
         panelFormulario.add(botonGuardar);
 
         frameFormulario.add(panelFormulario);
-        frameFormulario.setVisible(true); // Muestra el formulario
+        frameFormulario.setVisible(true); 
     }
 
     /**
@@ -113,10 +113,10 @@ public class VistaCategorias {
      * Elimina todas las filas actuales y vuelve a cargar las categorías desde la fuente de datos.
      */
     private void actualizarTablaCategorias() {
-        categoriaTableModel.setRowCount(0); // Limpia las filas existentes
-        List<Categoria> categorias = controlador.obtenerTodasLasCategorias(); // Obtiene todas las categorías
+        categoriaTableModel.setRowCount(0);  
+        List<Categoria> categorias = controlador.obtenerTodasLasCategorias(); 
         for (Categoria categoria : categorias) {
-            // Añade cada categoría a la tabla
+            
             categoriaTableModel.addRow(new Object[]{categoria.getId(), categoria.getNombre()});
         }
     }
@@ -130,36 +130,35 @@ public class VistaCategorias {
     public JPanel createVerCategoriasPanel() {
         JPanel panel = new JPanel(new BorderLayout());
 
-        // Panel superior con el texto "Categorías" y el botón "Agregar"
-    JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Alineación a la izquierda
-    JLabel labelCategorias = new JLabel("Categorías"); // Texto "Categorías"
+    JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT)); 
+    JLabel labelCategorias = new JLabel("Categorías"); 
     labelCategorias.setFont(new Font(labelCategorias.getFont().getName(), Font.BOLD, 20));
     labelCategorias.setForeground(Color.decode("#20134d"));
     JButton botonAgregar = new JButton("Agregar");
-    botonAgregar.addActionListener(e -> abrirFormularioAgregarCategoria()); // Acción del botón "Agregar"
+    botonAgregar.addActionListener(e -> abrirFormularioAgregarCategoria()); 
 
-    panelSuperior.add(labelCategorias); // Añade el texto al panel superior
-    panelSuperior.add(Box.createHorizontalStrut(500)); // Espaciador horizontal entre el texto y el botón
-    panelSuperior.add(botonAgregar); // Añade el botón al panel superior
-    panel.add(panelSuperior, BorderLayout.NORTH); // Añade el panel superior al layout principal
+    panelSuperior.add(labelCategorias); 
+    panelSuperior.add(Box.createHorizontalStrut(500)); 
+    panelSuperior.add(botonAgregar);  
+    panel.add(panelSuperior, BorderLayout.NORTH); 
 
         String[] columnNames = {"ID", "Nombre", "Acciones"};
         categoriaTableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 2; // Solo la columna de "Acciones" es editable
+                return column == 2;  
             }
         };
 
         table = new JTable(categoriaTableModel);
-        table.setRowHeight(30); // Ajusta la altura de las filas
-        table.getColumn("Acciones").setCellRenderer(new AccionesRenderer()); // Establece el renderizador de acciones
-        table.getColumn("Acciones").setCellEditor(new AccionesEditor(new JCheckBox())); // Establece el editor de acciones
-        table.getColumnModel().getColumn(2).setPreferredWidth(150); // Ajusta el ancho de la columna de "Acciones"
+        table.setRowHeight(30); 
+        table.getColumn("Acciones").setCellRenderer(new AccionesRenderer()); 
+        table.getColumn("Acciones").setCellEditor(new AccionesEditor(new JCheckBox()));  
+        table.getColumnModel().getColumn(2).setPreferredWidth(150); 
 
-        actualizarTablaCategorias(); // Carga inicial de categorías
+        actualizarTablaCategorias(); 
         JScrollPane scrollPane = new JScrollPane(table);
-        panel.add(scrollPane, BorderLayout.CENTER); // Añade la tabla al panel
+        panel.add(scrollPane, BorderLayout.CENTER); 
         return panel;
     }
 
@@ -173,15 +172,15 @@ public class VistaCategorias {
             setLayout(new FlowLayout(FlowLayout.CENTER, 5, 0));
             JButton botonEditar = new JButton("Editar");
             JButton botonEliminar = new JButton("Eliminar");
-            botonEditar.setPreferredSize(new Dimension(70, 25)); // Tamaño fijo para el botón "Editar"
-            botonEliminar.setPreferredSize(new Dimension(70, 25)); // Tamaño fijo para el botón "Eliminar"
+            botonEditar.setPreferredSize(new Dimension(70, 25)); 
+            botonEliminar.setPreferredSize(new Dimension(70, 25));  
             add(botonEditar);
             add(botonEliminar);
         }
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            return this; // Devuelve el panel que contiene los botones
+            return this;  
         }
     }
 
@@ -190,47 +189,47 @@ public class VistaCategorias {
      * Permite realizar acciones como editar y eliminar en la tabla.
      */
     private class AccionesEditor extends DefaultCellEditor {
-        private JPanel panel; // Panel que contiene los botones de acción
-        private JButton botonEditar; // Botón para editar
-        private JButton botonEliminar; // Botón para eliminar
+        private JPanel panel; 
+        private JButton botonEditar; 
+        private JButton botonEliminar; 
 
         public AccionesEditor(JCheckBox checkBox) {
             super(checkBox);
             panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
             botonEditar = new JButton("Editar");
             botonEliminar = new JButton("Eliminar");
-            botonEditar.setPreferredSize(new Dimension(70, 25)); // Tamaño fijo para el botón "Editar"
-            botonEliminar.setPreferredSize(new Dimension(70, 25)); // Tamaño fijo para el botón "Eliminar"
+            botonEditar.setPreferredSize(new Dimension(70, 25));  
+            botonEliminar.setPreferredSize(new Dimension(70, 25));  
 
-            // Acción del botón "Editar"
+           
             botonEditar.addActionListener(e -> {
-                int idCategoria = (int) categoriaTableModel.getValueAt(table.getSelectedRow(), 0); // Obtiene el ID de la categoría seleccionada
-                String nombreActual = (String) categoriaTableModel.getValueAt(table.getSelectedRow(), 1); // Obtiene el nombre actual
-                abrirFormularioEditarCategoria(idCategoria, nombreActual); // Abre el formulario de edición
+                int idCategoria = (int) categoriaTableModel.getValueAt(table.getSelectedRow(), 0); 
+                String nombreActual = (String) categoriaTableModel.getValueAt(table.getSelectedRow(), 1); 
+                abrirFormularioEditarCategoria(idCategoria, nombreActual); 
             });
 
-            // Acción del botón "Eliminar"
+           
             botonEliminar.addActionListener(e -> {
-                int idCategoria = (int) categoriaTableModel.getValueAt(table.getSelectedRow(), 0); // Obtiene el ID de la categoría seleccionada
+                int idCategoria = (int) categoriaTableModel.getValueAt(table.getSelectedRow(), 0); 
                 int respuesta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que deseas eliminar esta categoría?", "Confirmación", JOptionPane.YES_NO_OPTION);
                 if (respuesta == JOptionPane.YES_OPTION) {
-                    controlador.eliminarCategoria(idCategoria); // Llama al controlador para eliminar la categoría
-                    actualizarTablaCategorias(); // Actualiza la tabla después de eliminar
+                    controlador.eliminarCategoria(idCategoria);  
+                    actualizarTablaCategorias(); 
                 }
             });
 
-            panel.add(botonEditar); // Añade el botón "Editar" al panel
-            panel.add(botonEliminar); // Añade el botón "Eliminar" al panel
+            panel.add(botonEditar);  
+            panel.add(botonEliminar);  
         }
 
         @Override
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-            return panel; // Devuelve el panel que contiene los botones de acción
+            return panel; 
         }
 
         @Override
         public Object getCellEditorValue() {
-            return ""; // Devuelve un valor vacío ya que no se necesita un valor de celda específico
+            return ""; 
         }
     }
 }

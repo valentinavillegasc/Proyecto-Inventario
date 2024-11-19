@@ -12,16 +12,16 @@ import java.awt.event.ActionListener;
  * Incluye opciones para registrarse y recuperar contraseñas.
  */
 public class VistaLogin extends JFrame {
-    private JTextField campoUsuario;  // Campo de texto para el nombre de usuario
-    private JPasswordField campoContrasena;  // Campo de texto para la contraseña
-    private ControladorInventario controlador; 
+    private JTextField campoUsuario;
+    private JPasswordField campoContrasena;
+    private ControladorInventario controlador;
 
     /**
      * Constructor por defecto que llama al constructor con el controlador como argumento.
      * Inicializa la ventana de inicio de sesión sin un controlador específico.
      */
     public VistaLogin() {
-        this(null); 
+        this(null);
     }
 
     /**
@@ -32,85 +32,84 @@ public class VistaLogin extends JFrame {
     public VistaLogin(ControladorInventario controlador) {
         this.controlador = controlador;
 
-        setTitle("Inicio de sesión");  // Establece el título de la ventana
-        setSize(300, 250);  // Establece el tamaño de la ventana
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Cierra la aplicación al cerrar la ventana
-        setLocationRelativeTo(null);  // Centra la ventana en la pantalla
-        setLayout(new BorderLayout());  // Establece el layout del JFrame
+        setTitle("Inicio de sesión");
+        setSize(300, 250);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
 
-        JPanel panelFormulario = new JPanel(new GridBagLayout());  // Panel para el formulario
-        panelFormulario.setBackground(Color.decode("#095393")); // Establece el color de fondo personalizado
+        JPanel panelFormulario = new JPanel(new GridBagLayout());
+        panelFormulario.setBackground(Color.decode("#095393"));
 
-        GridBagConstraints gbc = new GridBagConstraints();  // Configuración de restricciones para el layout
-        gbc.fill = GridBagConstraints.HORIZONTAL;  // Permite que el componente ocupe todo el ancho disponible
-        gbc.insets = new Insets(5, 5, 5, 5);  // Espaciado entre componentes
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 5, 5, 5);
 
-        // Configuración de fuente para etiquetas
         Font fuenteEtiqueta = new Font("Arial", Font.BOLD, 12);
 
-        JLabel etiquetaUsuario = new JLabel("Usuario:");  // Etiqueta para el campo de usuario
-        etiquetaUsuario.setForeground(Color.WHITE);  // Cambia el color a blanco
-        etiquetaUsuario.setFont(fuenteEtiqueta);  // Cambia la fuente a negrita
-        campoUsuario = new JTextField(10);  // Campo de texto para ingresar el nombre de usuario
-        gbc.gridx = 0;  // Posición en el grid
+        JLabel etiquetaUsuario = new JLabel("Usuario:");
+        etiquetaUsuario.setForeground(Color.WHITE);
+        etiquetaUsuario.setFont(fuenteEtiqueta);
+        campoUsuario = new JTextField(10);
+        gbc.gridx = 0;
         gbc.gridy = 0;
-        panelFormulario.add(etiquetaUsuario, gbc);  // Añade la etiqueta al panel
-        gbc.gridx = 1;  // Cambia la posición para el campo de texto
-        panelFormulario.add(campoUsuario, gbc);  // Añade el campo de texto al panel
+        panelFormulario.add(etiquetaUsuario, gbc);
+        gbc.gridx = 1;
+        panelFormulario.add(campoUsuario, gbc);
 
-        JLabel etiquetaContrasena = new JLabel("Contraseña:");  // Etiqueta para el campo de contraseña
-        etiquetaContrasena.setForeground(Color.WHITE);  // Cambia el color a blanco
-        etiquetaContrasena.setFont(fuenteEtiqueta);  // Cambia la fuente a negrita
-        campoContrasena = new JPasswordField(10);  // Campo de texto para ingresar la contraseña
+        JLabel etiquetaContrasena = new JLabel("Contraseña:");
+        etiquetaContrasena.setForeground(Color.WHITE);
+        etiquetaContrasena.setFont(fuenteEtiqueta);
+        campoContrasena = new JPasswordField(10);
         gbc.gridx = 0;
         gbc.gridy = 1;
-        panelFormulario.add(etiquetaContrasena, gbc);  // Añade la etiqueta al panel
-        gbc.gridx = 1;  // Cambia la posición para el campo de contraseña
-        panelFormulario.add(campoContrasena, gbc);  // Añade el campo de contraseña al panel
+        panelFormulario.add(etiquetaContrasena, gbc);
+        gbc.gridx = 1;
+        panelFormulario.add(campoContrasena, gbc);
 
-        JButton botonIniciarSesion = new JButton("Iniciar sesión");  // Botón para iniciar sesión
+        JButton botonIniciarSesion = new JButton("Iniciar sesión");
         botonIniciarSesion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String usuario = campoUsuario.getText().trim();  // Obtiene el usuario ingresado
-                String contrasena = new String(campoContrasena.getPassword()).trim();  // Obtiene la contraseña ingresada
+                String usuario = campoUsuario.getText().trim();
+                String contrasena = new String(campoContrasena.getPassword()).trim();
 
-                if (controlador.iniciarSesion(usuario, contrasena)) {  // Verifica las credenciales
-                    VistaMenuPrincipal menuPrincipal = new VistaMenuPrincipal(controlador);  // Crea la vista del menú principal
-                    menuPrincipal.setVisible(true);  // Muestra el menú principal
-                    dispose();  // Cierra la ventana de inicio de sesión
+                if (controlador.iniciarSesion(usuario, contrasena)) {
+                    VistaMenuPrincipal menuPrincipal = new VistaMenuPrincipal(controlador);
+                    menuPrincipal.setVisible(true);
+                    dispose();
                 } else {
-                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");  // Mensaje de error
+                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
                 }
             }
         });
-        gbc.gridx = 0;  // Configura la posición del botón
+        gbc.gridx = 0;
         gbc.gridy = 2;
-        gbc.gridwidth = 2;  // El botón ocupa dos columnas
-        panelFormulario.add(botonIniciarSesion, gbc);  // Añade el botón al panel
+        gbc.gridwidth = 2;
+        panelFormulario.add(botonIniciarSesion, gbc);
 
-        JButton botonRegistrar = new JButton("Registrarse");  // Botón para registrarse
+        JButton botonRegistrar = new JButton("Registrarse");
         botonRegistrar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                VistaRegistro registro = new VistaRegistro(controlador);  // Crea la vista de registro
-                registro.setVisible(true);  // Muestra la vista de registro
+                VistaRegistro registro = new VistaRegistro(controlador);
+                registro.setVisible(true);
             }
         });
-        gbc.gridy = 3;  // Configura la posición del botón de registro
-        panelFormulario.add(botonRegistrar, gbc);  // Añade el botón al panel
+        gbc.gridy = 3;
+        panelFormulario.add(botonRegistrar, gbc);
 
-        JButton botonRecuperarContrasena = new JButton("Recuperar contraseña");  // Botón para recuperar la contraseña
+        JButton botonRecuperarContrasena = new JButton("Recuperar contraseña");
         botonRecuperarContrasena.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                VistaRecuperarContrasena recuperarContrasena = new VistaRecuperarContrasena(controlador);  // Crea la vista de recuperación de contraseña
-                recuperarContrasena.setVisible(true);  // Muestra la vista de recuperación de contraseña
+                VistaRecuperarContrasena recuperarContrasena = new VistaRecuperarContrasena(controlador);
+                recuperarContrasena.setVisible(true);
             }
         });
-        gbc.gridy = 4;  // Configura la posición del botón de recuperación de contraseña
-        panelFormulario.add(botonRecuperarContrasena, gbc);  // Añade el botón al panel
+        gbc.gridy = 4;
+        panelFormulario.add(botonRecuperarContrasena, gbc);
 
-        add(panelFormulario, BorderLayout.CENTER);  // Añade el panel de formulario al centro del JFrame
+        add(panelFormulario, BorderLayout.CENTER);
     }
 }

@@ -17,26 +17,26 @@ import java.util.List;
 
 public class VistaMovimientos {
     private ControladorInventario controlador;
-    private DefaultTableModel model; // Modelo de la tabla
-    private JTable table; // Tabla de movimientos
+    private DefaultTableModel model; 
+    private JTable table; 
     private VistaMateriales vistaMateriales;
 
     public VistaMovimientos(ControladorInventario controlador) {
         this.controlador = controlador;
         this.model = new DefaultTableModel(new String[]{"ID", "Tipo", "Material", "Cantidad", "Motivo", "Responsable", "Fecha"}, 0);
-    this.table = new JTable(model);  // Usar el modelo en la tabla
-    configurarTabla();  // Llamar al método de configuración de la tabla
+    this.table = new JTable(model); 
+    configurarTabla();  
         
     }
 
     public JPanel createVerMovimientosPanel() {
         JPanel panel = new JPanel(new BorderLayout());
     
-        // Panel superior con el texto "Movimientos" y el botón "Agregar Movimiento"
-        JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Alineación a la izquierda
-        JLabel labelMovimientos = new JLabel("Movimientos"); // Texto "Movimientos"
+        
+        JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT));  
+        JLabel labelMovimientos = new JLabel("Movimientos");  
         labelMovimientos.setFont(new Font(labelMovimientos.getFont().getName(), Font.BOLD, 20));
-        labelMovimientos.setForeground(Color.decode("#20134d")); // Cambiar el color del texto al color hexadecimal
+        labelMovimientos.setForeground(Color.decode("#20134d")); 
 
 
         JButton botonAgregarMovimiento = new JButton("Agregar");
@@ -47,19 +47,19 @@ public class VistaMovimientos {
             }
         });
     
-        panelSuperior.add(labelMovimientos); // Añade el texto al panel superior
-        panelSuperior.add(Box.createHorizontalStrut(500)); // Espaciador horizontal entre el texto y el botón
-        panelSuperior.add(botonAgregarMovimiento); // Añade el botón al panel superior
-        panel.add(panelSuperior, BorderLayout.NORTH); // Añade el panel superior al layout principal
+        panelSuperior.add(labelMovimientos); 
+        panelSuperior.add(Box.createHorizontalStrut(500));  
+        panelSuperior.add(botonAgregarMovimiento); 
+        panel.add(panelSuperior, BorderLayout.NORTH);          
     
         JScrollPane scrollPane = new JScrollPane(table);
-        panel.add(scrollPane, BorderLayout.CENTER); // Añade el scroll con la tabla al panel principal
+        panel.add(scrollPane, BorderLayout.CENTER); 
     
-        // Ajuste de tamaño del JFrame o panel principal
+  
         panel.setPreferredSize(new Dimension(900, 500));
     
-        cargarMovimientos(); // Cargar los movimientos al inicializar
-        configurarTabla(); // Llamar a la configuración de la tabla
+        cargarMovimientos();  
+        configurarTabla(); 
     
         return panel;
     }
@@ -77,7 +77,7 @@ public class VistaMovimientos {
     }
 
     private void cargarMovimientos() {
-        model.setRowCount(0); // Limpiar filas existentes
+        model.setRowCount(0); 
         List<Movimiento> movimientos = controlador.obtenerTodosLosMovimientos();
         for (Movimiento movimiento : movimientos) {
             model.addRow(new Object[]{
@@ -88,7 +88,7 @@ public class VistaMovimientos {
                 movimiento.getMotivo(),
                 movimiento.getResponsable().getNombreUsuario(),
                 movimiento.getFechaFormateada(),
-                "Acciones"  // Placeholder para los botones
+                "Acciones"  
             });
         }
     }
@@ -145,7 +145,7 @@ public class VistaMovimientos {
                 controlador.crearMovimiento(tipo, motivo, material, cantidad, responsable, LocalDateTime.now());
                 JOptionPane.showMessageDialog(frameFormulario, "Movimiento agregado con éxito.");
                 frameFormulario.dispose();
-                cargarMovimientos(); // Recargar la tabla de movimientos
+                cargarMovimientos();  
                
                 
             } catch (IllegalArgumentException ex) {

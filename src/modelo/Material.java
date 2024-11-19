@@ -11,12 +11,12 @@ public class Material {
     private Categoria categoria; 
     private String proveedor;
     private String ubicacion;
-    private int entradas;  // Total de entradas de material
-    private int salidas;   // Total de salidas de material
-    private int stock;     // Stock actual disponible
+    private int entradas;  
+    private int salidas;   
+    private int stock;      
 
     public String toString() {
-        return nombre; // Devuelve el nombre del material
+        return nombre;  
     }
 
     /**
@@ -173,8 +173,8 @@ public class Material {
         if (cantidad <= 0) {
             throw new IllegalArgumentException("La cantidad a ingresar debe ser mayor a cero.");
         }
-        this.stock += cantidad;  // Incrementa el stock
-        this.entradas += cantidad;  // Actualiza el número de entradas
+        this.stock += cantidad; 
+        this.entradas += cantidad; 
     }
 
     /**
@@ -190,7 +190,7 @@ public class Material {
         if (cantidad > stock) {
             throw new IllegalArgumentException("No hay suficiente stock para realizar la salida.");
         }
-        this.stock -= cantidad;  // Decrementa el stock
-        this.salidas += cantidad;  // Actualiza el número de salidas
+        this.stock -= cantidad; 
+        this.salidas += cantidad;   
     }
 }
