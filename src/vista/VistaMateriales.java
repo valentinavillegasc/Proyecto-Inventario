@@ -18,9 +18,9 @@ import java.util.List;
  * Permite agregar, editar y eliminar materiales a través de una interfaz gráfica.
  */
 public class VistaMateriales {
-    private ControladorInventario controlador; // Controlador para manejar la lógica de negocio
-    private DefaultTableModel materialTableModel; // Modelo de la tabla para mostrar materiales
-    private JTable table; // Tabla para visualizar los materiales
+    private ControladorInventario controlador;  
+    private DefaultTableModel materialTableModel;  
+    private JTable table; 
 
     /**
      * Constructor de la clase VistaMateriales.
@@ -55,7 +55,6 @@ public class VistaMateriales {
         for (Material material : materiales) {
             controlador.actualizarStockMaterial(material.getCodigo(), material.getStock());
         }
-        // Aseguramos que se actualiza la tabla después de modificar el stock
         actualizarTablaMateriales();
     }
 
@@ -64,7 +63,7 @@ public class VistaMateriales {
      */
     public void actualizarTablaMateriales() {
         if (materialTableModel != null) {
-            materialTableModel.setRowCount(0); // Limpiar las filas de la tabla
+            materialTableModel.setRowCount(0);  
             List<Material> materiales = controlador.obtenerTodosLosMateriales();
             for (Material material : materiales) {
                 materialTableModel.addRow(new Object[]{
@@ -75,12 +74,11 @@ public class VistaMateriales {
                     material.getEntradas(),
                     material.getSalidas(),
                     material.getStock(),
-                    material.getUbicacion()  // Asegúrate de que el material tenga la propiedad de ubicación
+                    material.getUbicacion() 
                 });
             }
-            // Forzar la repintada de la tabla
-            table.revalidate();  // Esto asegura que la tabla se repinte después de la actualización.
-            table.repaint();     // Esto repinta la tabla para mostrar los cambios visualmente.
+            table.revalidate();  
+            table.repaint();      
         } else {
             System.err.println("El modelo de la tabla es nulo.");
         }
@@ -136,7 +134,7 @@ public class VistaMateriales {
             if (!nombreMaterial.isEmpty() && categoriaSeleccionada != null) {
                 controlador.crearMaterial(nombreMaterial, categoriaSeleccionada, proveedor, ubicacion);
                 actualizarTablaMateriales();
-                actualizarStockMateriales(); // Actualiza el stock después de crear el material
+                actualizarStockMateriales();
                 JOptionPane.showMessageDialog(frameFormulario, "Material creado con éxito.");
                 frameFormulario.dispose();
             } else {
@@ -167,38 +165,33 @@ public class VistaMateriales {
     public JPanel createVerMaterialesPanel() {
         JPanel panel = new JPanel(new BorderLayout());
 
-        // Panel superior con el texto "Materiales" y el botón "Agregar"
-    JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Alineación a la izquierda
-    JLabel labelMateriales = new JLabel("Materiales"); // Texto "Materiales"
+    JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT)); 
+    JLabel labelMateriales = new JLabel("Materiales"); 
     labelMateriales.setFont(new Font(labelMateriales.getFont().getName(), Font.BOLD, 20));
     labelMateriales.setForeground(Color.decode("#20134d"));
 
     JButton botonAgregar = new JButton("Agregar");
-    botonAgregar.addActionListener(e -> abrirFormularioAgregarMaterial()); // Acción del botón "Agregar"
+    botonAgregar.addActionListener(e -> abrirFormularioAgregarMaterial()); 
 
-    panelSuperior.add(labelMateriales); // Añade el texto al panel superior
+    panelSuperior.add(labelMateriales); 
     panelSuperior.add(Box.createHorizontalStrut(500)); 
         panelSuperior.add(botonAgregar);
         panel.add(panelSuperior, BorderLayout.NORTH);
 
-        // Definir las columnas correctamente, asegurándonos de incluir las de "Entradas", "Salidas", "Ubicación"
         materialTableModel = new DefaultTableModel(new String[]{"Código", "Nombre", "Proveedor", "Categoría", "Entradas", "Salidas", "Stock", "Ubicación", "Acciones"}, 0);
         table = new JTable(materialTableModel);
 configurarTabla();
-        // Asignar renderizadores y editores a la columna de "Acciones"
         table.getColumnModel().getColumn(8).setCellRenderer(new AccionesRenderer()); // Acciones está en la última columna
         table.getColumnModel().getColumn(8).setCellEditor(new AccionesEditor(new JCheckBox()));
 
         JScrollPane scrollPane = new JScrollPane(table);
         panel.add(scrollPane, BorderLayout.CENTER);
 
-        // Actualizar la tabla después de configurarla
         actualizarTablaMateriales();
         return panel;
     }
 
-    // Clases internas para los botones de la columna "Acciones"
-    // Código de los renderers y editores de las acciones sigue igual...
+
 
     /**
      * Clase interna que representa el renderizador de la columna de acciones en la tabla de materiales.
@@ -257,7 +250,7 @@ configurarTabla();
                 Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof Categoria) {
                     Categoria categoria = (Categoria) value;
-                    setText(categoria.getNombre()); // Mostrar solo el nombre de la categoría
+                    setText(categoria.getNombre());  
                 }
                 return c;
             }
@@ -278,16 +271,12 @@ configurarTabla();
                 nuevoMaterial.setUbicacion(nuevaUbicacion);
                 nuevoMaterial.setCategoria(nuevaCategoria);
         
-                // Llama al controlador para editar el material
                 controlador.editarMaterial(idMaterial, nuevoMaterial);
                 
-                // Actualiza la tabla para reflejar los cambios
                 actualizarTablaMateriales();
                 
-                // Muestra un mensaje de éxito
                 JOptionPane.showMessageDialog(frameFormulario, "Material actualizado con éxito.");
                 
-                // Cierra el formulario
                 frameFormulario.dispose();
             } else {
                 JOptionPane.showMessageDialog(frameFormulario, "Todos los campos son obligatorios.");

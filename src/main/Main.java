@@ -1,4 +1,4 @@
-package vista;
+package main;
 import javax.swing.SwingUtilities;
 import vista.VistaLogin;
 import controller.ControladorInventario;
@@ -10,7 +10,7 @@ import controller.ControladorInventario;
  * Utiliza el patrón de diseño Swing para crear y mostrar la ventana de inicio de sesión.
  * Se encarga de inicializar el controlador del inventario y pasar la instancia a la vista de inicio de sesión.
  */
-public class Vista {
+public class Main {
     
     /**
      * Método principal que se ejecuta al iniciar la aplicación.
@@ -23,8 +23,8 @@ public class Vista {
     public static void main(String[] args) {
         try {
             SwingUtilities.invokeLater(() -> {
-                ControladorInventario controlador = new ControladorInventario();  // Crear una instancia del controlador
-                VistaLogin vistaLogin = new VistaLogin(controlador);  // Pasar el controlador al constructor de VistaLogin
+                ControladorInventario controlador = new ControladorInventario();  
+                VistaLogin vistaLogin = new VistaLogin(controlador);   
                 vistaLogin.setVisible(true);
             });
         } catch (Exception e) {
